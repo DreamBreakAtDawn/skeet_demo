@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="skeet-common-api" />
+        <module name="skeet-consul-config" />
+        <module name="skeet-consul-provider" />
+        <module name="skeet-consul-consumer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="skeet-common-api" target="1.8" />
+      <module name="skeet-consul-config" target="1.8" />
+      <module name="skeet-consul-consumer" target="1.8" />
+      <module name="skeet-consul-provider" target="1.8" />
+      <module name="skeet-test" target="1.8" />
+      <module name="skeet_demo" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="skeet-common-api" options="-parameters" />
+      <module name="skeet-consul-config" options="-parameters" />
+      <module name="skeet-consul-consumer" options="-parameters" />
+      <module name="skeet-consul-provider" options="-parameters" />
+      <module name="skeet-test" options="-parameters" />
+      <module name="skeet_demo" options="-parameters" />
+    </option>
+  </component>
+</project>

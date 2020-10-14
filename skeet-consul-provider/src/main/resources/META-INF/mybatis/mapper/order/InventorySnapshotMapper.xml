@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skeet.consul.provider.project.order.dao.mapper.InventorySnapshotMapper">
+
+    <insert id="insertInventorySnapshot"
+            parameterType="com.skeet.consul.provider.project.order.model.domain.InventoryCommonCriteria">
+        INSERT INTO inventory_snapshot(
+        `customer_id`,
+        `customer_code`,
+        `warehouse_code`,
+        `sku_id`,
+        `sku_code`,
+        `sku_name`,
+        `batch_no`,
+        `expiry_date`,
+        `stock_quality`,
+        `consignment_no`,
+        `warehouse_stock`,
+        `putaway_time`,
+        `create_time`,
+        `snapshot_time`,
+        `local_putaway_time`,
+        `min_charge_volume`
+        )
+        SELECT
+        `customer_id`,
+        `customer_code`,
+        `warehouse_code`,
+        `sku_id`,
+        `sku_code`,
+        `sku_name`,
+        `batch_no`,
+        `expiry_date`,
+        `stock_quality`,
+        `consignment_no`,
+        `warehouse_stock`,
+        `putaway_time`,
+        `create_time`,
+        #{criteria.snapshotTime},
+        `local_putaway_time`,
+        IF (
+        EXISTS (SELECT 1 FROM stock_minimum_volume_config smvc
+        WHERE smvc.customer_id IN (ivd.customer_id, 'ALL')
+        AND smvc.warehouse_code IN (ivd.warehouse_code, 'ALL')
+        AND smvc.sku_id IN (ivd.sku_id, 'ALL')
+        AND smvc.effective_time &lt;= #{criteria.snapshotTime}
+        AND smvc.ineffective_time &gt;= #{criteria.snapshotTime}
+        ),
+        0.0001,
+        0.001
+        )
+        FROM inventory_detail ivd
+        WHERE
+        NOT EXISTS
+        (SELECT 1 FROM inventory_snapshot WHERE snapshot_time = #{criteria.snapshotTime}
+        <include refid="warehouseCriteria"/>
+        )
+        <include refid="warehouseCriteria"/>
+    </insert>
+
+    <sql id="warehouseCriteria">
+        <if test="criteria.warehouseCodeList != null">
+            AND warehouse_code IN
+            <foreach collection="criteria.warehouseCodeList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="selectWarehouseCode" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT DISTINCT warehouse_code FROM inventory_snapshot WHERE snapshot_time = #{snapshotTime}
+    </select>
+
+    <insert id="insertInventorySnapshotList" parameterType="com.skeet.consul.provider.project.order.model.entity.InventorySnapshot">
+        INSERT INTO inventory_snapshot(
+        `customer_id`,
+        `customer_code`,
+        `warehouse_code`,
+        `sku_id`,
+        `sku_code`,
+        `sku_name`,
+        `batch_no`,
+        `expiry_date`,
+        `stock_quality`,
+        `consignment_no`,
+        `warehouse_stock`,
+        `putaway_time`,
+        `create_time`,
+        `snapshot_time`,
+        `local_putaway_time`,
+        `min_charge_volume`
+        ) VALUES
+        <foreach collection="snapshots" item="item" index="index" separator=",">
+            (
+            #{item.customerId},
+            #{item.customerCode},
+            #{item.warehouseCode},
+            #{item.skuId},
+            #{item.skuCode},
+            #{item.skuName},
+            #{item.batchNo},
+            #{item.expiryDate},
+            #{item.stockQuality},
+            #{item.consignmentNo},
+            #{item.warehouseStock},
+            #{item.putawayTime},
+            #{item.createTime},
+            #{item.snapshotTime},
+            #{item.localPutawayTime},
+            #{item.minChargeVolume}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectChargeData" parameterType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria"
+    resultType="com.skeet.consul.provider.project.order.model.export.InventoryChargeExportDTO">
+        SELECT
+        CONCAT_WS(
+        '-',
+        temp.warehouse_code,
+        temp.customer_code,
+        temp.snapshot_time
+        ) AS bs_code,
+        temp.warehouse_code,
+        temp.customer_id,
+        temp.customer_code,
+        temp.sku_id,
+        temp.length,
+        temp.width,
+        temp.height,
+
+        SUM(
+        CONVERT(
+        IF(
+        temp.min_charge_volume > temp.volume * 0.000001,
+        temp.min_charge_volume,
+        temp.volume * 0.000001),
+        <include refid="volumeAccuracy"/>
+        ) * temp.warehouse_stock
+        ) AS itm_volume,
+
+        SUM(
+        CONVERT(
+        temp.weight,
+        <include refid="weightAccuracy"/>
+        )
+        ) * temp.warehouse_stock AS itm_weight,
+        SUM(temp.warehouse_stock) AS itm_quantity,
+        temp.stock_age,
+        temp.charge_day_num AS charge_day_num,
+        QUARTER (str_to_date(#{criteria.toSnapshotTime}, '%Y%m%d')) AS charge_season,
+        <include refid="itmEnddate"/>
+        'N' AS itm_sign,
+        CURRENT_TIMESTAMP AS create_time,
+        0 AS charge_num,
+        'STANDARD' AS charge_mode,
+        temp.snapshot_time
+        FROM
+        (
+        SELECT
+        temp_ivs.snapshot_time,
+        temp_ivs.warehouse_code,
+        temp_ivs.customer_code,
+        temp_ivs.customer_id,
+        temp_ivs.sku_id,
+        temp_ivs.warehouse_stock,
+        temp_ivs.stock_age,
+        temp_ivs.charge_day_num,
+        temp_ivs.min_charge_volume,
+        IFNULL(vsbi.length, 0) AS length,
+        IFNULL(vsbi.width, 0) AS width,
+        IFNULL(vsbi.height, 0) AS height,
+        IFNULL(vsbi.volume, 0) AS volume,
+        IFNULL(vsbi.weight, 0) AS weight
+        FROM
+        (
+        SELECT
+        ivs.snapshot_time,
+        ivs.warehouse_code,
+        ivs.customer_code,
+        ivs.customer_id,
+        ivs.sku_id,
+        ivs.warehouse_stock,
+        <include refid="stockAge"/>
+        <include refid="chargeDayNum"/>
+        <include refid="minChargeVolume"/>
+
+        FROM inventory_snapshot ivs
+        <where>
+            <include refid="criteriaForInsertCharge"/>
+        </where>
+        ) AS temp_ivs
+        INNER JOIN v_sku_business_info vsbi ON temp_ivs.sku_id = vsbi.sku_id
+        ) AS temp
+        GROUP BY
+        temp.warehouse_code,
+        temp.customer_id,
+        temp.customer_code,
+        temp.sku_id,
+        temp.stock_age
+    </select>
+
+    <!--  正常仓租查询条件  -->
+    <sql id="criteriaForInsertCharge">
+        <include refid="commonCriteria"/>
+
+        AND ivs.snapshot_time = #{criteria.toSnapshotTime}
+        <if test="criteria.icbuCustomerIds != null">
+            AND ivs.customer_id NOT IN
+            <foreach collection="criteria.icbuCustomerIds" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="criteria.contractConfigList != null">
+            AND (ivs.customer_id, ivs.warehouse_code) NOT IN
+            <foreach collection="criteria.contractConfigList" item="item" index="index" separator="," open="(" close=")">
+                (#{item.customerId}, #{item.warehouseCode})
+            </foreach>
+        </if>
+    </sql>
+
+    <!--  通用查询条件  -->
+    <sql id="commonCriteria">
+        AND ivs.warehouse_stock > 0
+        AND DATEDIFF(
+        STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+        IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+        ) > -1
+        <if test='criteria.warehouseCode != null and criteria.warehouseCode !=""'>
+            AND FIND_IN_SET(ivs.warehouse_code, #{criteria.warehouseCode})
+        </if>
+        <if test='criteria.customerCode != null and criteria.customerCode !=""'>
+            AND ivs.customer_code = #{criteria.customerCode}
+        </if>
+        <if test='criteria.warehouseCodeList != null'>
+            AND ivs.warehouse_code IN
+            <foreach collection="criteria.warehouseCodeList" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test='criteria.customerIds != null'>
+            AND ivs.customer_id IN
+            <foreach collection="criteria.customerIds" item="item" index="index" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="stockAge">
+        DATEDIFF(
+          STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+          IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+        ) + 1 AS stock_age,
+    </sql>
+
+    <sql id="chargeDayNum">
+        IF (
+            DATEDIFF(
+              STR_TO_DATE(#{criteria.fromSnapshotTime}, '%Y%m%d'),
+              IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+            ) > 0,
+
+            DATEDIFF(
+              STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+              STR_TO_DATE(#{criteria.fromSnapshotTime}, '%Y%m%d')
+            ) + 1,
+
+            DATEDIFF(
+              STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+              IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+            ) + 1
+        ) AS charge_day_num,
+    </sql>
+
+    <sql id="itmEnddate">
+        DATE_ADD(
+            STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d %H'),
+            INTERVAL 1 DAY
+        ) AS itm_enddate,
+    </sql>
+
+    <!--  没有逗号结尾，所以需要放在并列属性的最后面  -->
+    <sql id="minChargeVolume">
+        IFNULL(ivs.min_charge_volume,
+            IF (
+            EXISTS (SELECT 1 FROM stock_minimum_volume_config smvc
+            WHERE smvc.customer_id IN (ivs.customer_id, 'ALL')
+            AND smvc.effective_time &lt;= #{criteria.toSnapshotTime}
+            AND smvc.ineffective_time &gt;= #{criteria.toSnapshotTime}
+            ),
+            0.001,
+            0.01
+            )
+        ) AS min_charge_volume
+    </sql>
+
+    <sql id="volumeAccuracy">
+        DECIMAL(15, 3)
+    </sql>
+
+    <sql id="weightAccuracy">
+        DECIMAL(15, 3)
+    </sql>
+
+
+    <select id="selectBy" parameterType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria"
+            resultType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotDTO">
+        select *
+        from inventory_snapshot ivs
+        <where>
+            <if test="criteria.snapshotTime != null">
+                AND ivs.snapshot_time = #{criteria.snapshotTime}
+            </if>
+        </where>
+    </select>
+</mapper>
