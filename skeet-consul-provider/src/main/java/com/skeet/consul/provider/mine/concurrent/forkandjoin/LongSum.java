@@ -10,7 +10,7 @@ import java.util.concurrent.RecursiveTask;
  */
 public class LongSum extends RecursiveTask<Long> {
 
-    public static final int SEQUENTIAL_THRESHOLD = 5;
+    public static final int SEQUENTIAL_THRESHOLD = 1000;
     public static final long NPS = 1000L * 1000 * 1000;
     public static final boolean extraWork = true;
     int low;
