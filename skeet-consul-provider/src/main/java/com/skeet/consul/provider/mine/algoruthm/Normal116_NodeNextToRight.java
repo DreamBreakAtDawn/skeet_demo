@@ -22,7 +22,7 @@ import java.util.List;
  * @author chengsj
  * @date 2020/10/15 19:22
  */
-public class NodeNextToRight {
+public class Normal116_NodeNextToRight {
 
     public static void main(String[] args) {
         Integer[] nodes = new Integer[] {1,2,3,4,5,6,7};
