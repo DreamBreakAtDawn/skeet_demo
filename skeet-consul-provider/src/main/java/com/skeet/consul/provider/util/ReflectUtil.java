@@ -88,9 +88,9 @@ public class ReflectUtil {
                     val = 0;
                 } else if (type.contains("Long")) {
                     val = 0;
-                }  else if (type.contains("List")) {
+                } else if (type.contains("List")) {
                     val = Lists.newArrayList();
-                }  else if (type.contains("Map")) {
+                } else if (type.contains("Map")) {
                     val = Maps.newHashMap();
                 } else {
                     val = typeClass.newInstance();

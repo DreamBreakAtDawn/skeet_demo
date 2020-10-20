@@ -99,7 +99,7 @@ public class ManifestOperationDTO {
      */
     private String clearanceTrackingRemark;
     /**
-     *  是否报关查验
+     * 是否报关查验
      */
     private String isDeclareCheck;
     /**

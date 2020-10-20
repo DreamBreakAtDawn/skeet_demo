@@ -8,15 +8,15 @@ import java.util.List;
 
 /**
  * Desc:给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
- *
+ * <p>
  * struct Node {
- *   int val;
- *   Node *left;
- *   Node *right;
- *   Node *next;
+ * int val;
+ * Node *left;
+ * Node *right;
+ * Node *next;
  * }
  * 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
- *
+ * <p>
  * 初始状态下，所有 next 指针都被设置为 NULL
  *
  * @author chengsj
@@ -25,7 +25,7 @@ import java.util.List;
 public class Normal116_NodeNextToRight {
 
     public static void main(String[] args) {
-        Integer[] nodes = new Integer[] {1,2,3,4,5,6,7};
+        Integer[] nodes = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         Node node = NodeUtil.buildNode(nodes);
         connect(node);
         System.out.println();
@@ -41,7 +41,7 @@ public class Normal116_NodeNextToRight {
         Node firstNode = root;
         List<Node> nodeList = new ArrayList<>();
         nodeList.add(root);
-        while(firstNode != null && firstNode.left != null) {
+        while (firstNode != null && firstNode.left != null) {
             List<Node> nodeTempList = new ArrayList<>();
             for (int i = 0; i < nodeList.size(); i++) {
                 Node fst = nodeList.get(i);
@@ -71,10 +71,10 @@ public class Normal116_NodeNextToRight {
      * @return
      */
     public static Node connect_Best(Node root) {
-        if(root == null || root.left == null)
+        if (root == null || root.left == null)
             return root;
         root.left.next = root.right;
-        if(root.next != null){
+        if (root.next != null) {
             root.right.next = root.next.left;
         }
         connect(root.left);

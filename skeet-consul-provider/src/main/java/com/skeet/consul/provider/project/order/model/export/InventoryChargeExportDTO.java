@@ -79,7 +79,7 @@ public class InventoryChargeExportDTO {
      * 当前周期内的计费天数（如计费周期7天计一次费，则计费天数最多为7天）
      */
     @Property(name = "计费天数")
-    private Integer  chargeDayNum;
+    private Integer chargeDayNum;
 
     /**
      * 库龄

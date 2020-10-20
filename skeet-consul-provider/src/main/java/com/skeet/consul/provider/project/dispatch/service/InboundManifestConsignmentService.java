@@ -14,7 +14,7 @@ public interface InboundManifestConsignmentService {
     /**
      * 获取数据
      *
-     * @param manifestId 货单ID
+     * @param manifestId    货单ID
      * @param operationNode 操作节点
      * @param consignmentNo 委托单号
      * @return 结果

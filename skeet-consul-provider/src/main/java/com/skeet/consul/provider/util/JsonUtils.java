@@ -88,12 +88,13 @@ public class JsonUtils {
 
     /**
      * 将一个json流转化为对象
+     *
      * @param in
      * @param clazz
      * @param <T>
      * @return
      */
-    public static <T> T jsonToBean(InputStream in, Class<T> clazz){
+    public static <T> T jsonToBean(InputStream in, Class<T> clazz) {
         BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
         byte[] bytes = new byte[1024];
         StringBuilder builder = new StringBuilder();
@@ -105,7 +106,7 @@ public class JsonUtils {
         } catch (IOException e) {
             throw new RuntimeException(MessageFormat.format("Convert error: {0} to {1}", in, clazz), e);
         } finally {
-            if (in != null){
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
@@ -194,19 +195,19 @@ class DateAdapter implements JsonDeserializer<Date> {
         if (StringUtils.isBlank(dataJson)) {
             return null;
         }
-        if(StringUtils.isNumeric(dataJson)){
+        if (StringUtils.isNumeric(dataJson)) {
             return new Date(json.getAsJsonPrimitive().getAsLong());
         }
-        if(!dataJson.contains("-")){
+        if (!dataJson.contains("-")) {
             DateTime dateTime = fmt3.parseDateTime(dataJson);
             return dateTime.toDate();
         }
-        if(dataJson.contains(".")){
-        	try {
-        		return fmt2.parseDateTime(dataJson).toDate();
-        	}catch(Exception e) {
-        		return fmt4.parseDateTime(dataJson).toDate();
-        	}
+        if (dataJson.contains(".")) {
+            try {
+                return fmt2.parseDateTime(dataJson).toDate();
+            } catch (Exception e) {
+                return fmt4.parseDateTime(dataJson).toDate();
+            }
         }
         return fmt1.parseDateTime(dataJson).toDate();
     }

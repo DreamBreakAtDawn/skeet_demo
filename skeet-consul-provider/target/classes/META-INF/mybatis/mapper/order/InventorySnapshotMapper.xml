@@ -73,7 +73,8 @@
         SELECT DISTINCT warehouse_code FROM inventory_snapshot WHERE snapshot_time = #{snapshotTime}
     </select>
 
-    <insert id="insertInventorySnapshotList" parameterType="com.skeet.consul.provider.project.order.model.entity.InventorySnapshot">
+    <insert id="insertInventorySnapshotList"
+            parameterType="com.skeet.consul.provider.project.order.model.entity.InventorySnapshot">
         INSERT INTO inventory_snapshot(
         `customer_id`,
         `customer_code`,
@@ -114,8 +115,9 @@
         </foreach>
     </insert>
 
-    <select id="selectChargeData" parameterType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria"
-    resultType="com.skeet.consul.provider.project.order.model.export.InventoryChargeExportDTO">
+    <select id="selectChargeData"
+            parameterType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria"
+            resultType="com.skeet.consul.provider.project.order.model.export.InventoryChargeExportDTO">
         SELECT
         CONCAT_WS(
         '-',
@@ -215,7 +217,8 @@
         </if>
         <if test="criteria.contractConfigList != null">
             AND (ivs.customer_id, ivs.warehouse_code) NOT IN
-            <foreach collection="criteria.contractConfigList" item="item" index="index" separator="," open="(" close=")">
+            <foreach collection="criteria.contractConfigList" item="item" index="index" separator="," open="("
+                     close=")">
                 (#{item.customerId}, #{item.warehouseCode})
             </foreach>
         </if>
@@ -226,7 +229,8 @@
         AND ivs.warehouse_stock > 0
         AND DATEDIFF(
         STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
-        IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+        IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'),
+        DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
         ) > -1
         <if test='criteria.warehouseCode != null and criteria.warehouseCode !=""'>
             AND FIND_IN_SET(ivs.warehouse_code, #{criteria.warehouseCode})
@@ -250,49 +254,52 @@
 
     <sql id="stockAge">
         DATEDIFF(
-          STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
-          IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+        STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+        IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'),
+        DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
         ) + 1 AS stock_age,
     </sql>
 
     <sql id="chargeDayNum">
         IF (
-            DATEDIFF(
-              STR_TO_DATE(#{criteria.fromSnapshotTime}, '%Y%m%d'),
-              IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
-            ) > 0,
+        DATEDIFF(
+        STR_TO_DATE(#{criteria.fromSnapshotTime}, '%Y%m%d'),
+        IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'),
+        DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+        ) > 0,
 
-            DATEDIFF(
-              STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
-              STR_TO_DATE(#{criteria.fromSnapshotTime}, '%Y%m%d')
-            ) + 1,
+        DATEDIFF(
+        STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+        STR_TO_DATE(#{criteria.fromSnapshotTime}, '%Y%m%d')
+        ) + 1,
 
-            DATEDIFF(
-              STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
-              IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'), DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
-            ) + 1
+        DATEDIFF(
+        STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d'),
+        IF(ivs.local_putaway_time != '', STR_TO_DATE(LEFT(ivs.local_putaway_time, 10), '%Y-%m-%d'),
+        DATE_FORMAT(ivs.putaway_time, '%Y-%m-%d'))
+        ) + 1
         ) AS charge_day_num,
     </sql>
 
     <sql id="itmEnddate">
         DATE_ADD(
-            STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d %H'),
-            INTERVAL 1 DAY
+        STR_TO_DATE(#{criteria.toSnapshotTime}, '%Y%m%d %H'),
+        INTERVAL 1 DAY
         ) AS itm_enddate,
     </sql>
 
     <!--  没有逗号结尾，所以需要放在并列属性的最后面  -->
     <sql id="minChargeVolume">
         IFNULL(ivs.min_charge_volume,
-            IF (
-            EXISTS (SELECT 1 FROM stock_minimum_volume_config smvc
-            WHERE smvc.customer_id IN (ivs.customer_id, 'ALL')
-            AND smvc.effective_time &lt;= #{criteria.toSnapshotTime}
-            AND smvc.ineffective_time &gt;= #{criteria.toSnapshotTime}
-            ),
-            0.001,
-            0.01
-            )
+        IF (
+        EXISTS (SELECT 1 FROM stock_minimum_volume_config smvc
+        WHERE smvc.customer_id IN (ivs.customer_id, 'ALL')
+        AND smvc.effective_time &lt;= #{criteria.toSnapshotTime}
+        AND smvc.ineffective_time &gt;= #{criteria.toSnapshotTime}
+        ),
+        0.001,
+        0.01
+        )
         ) AS min_charge_volume
     </sql>
 

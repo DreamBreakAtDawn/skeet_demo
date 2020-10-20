@@ -26,7 +26,8 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return null;
 //        return getBaseMapper().select(record);
     }
-//
+
+    //
 //    @Override
 //    public T selectOne(T record) {
 //        return getBaseMapper().selectOne(record);
@@ -47,7 +48,8 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return 0;
 //        return getBaseMapper().insertSelective(record);
     }
-//
+
+    //
     @Override
     public int insertSelectiveList(List<T> recordList) {
         return 0;

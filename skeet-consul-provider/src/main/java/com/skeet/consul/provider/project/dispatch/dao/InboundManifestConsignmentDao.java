@@ -16,9 +16,9 @@ public interface InboundManifestConsignmentDao extends BaseDao<InboundManifestCo
     /**
      * 获取数据
      *
-     * @param manifestId 货单ID
+     * @param manifestId    货单ID
      * @param operationNode 操作节点
-     * @param consignmentNo  委托单号
+     * @param consignmentNo 委托单号
      * @return 结果
      */
     List<InboundManifestConsignment> obtainData(String manifestId, String operationNode, String consignmentNo);

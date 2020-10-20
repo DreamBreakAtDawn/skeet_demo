@@ -165,7 +165,7 @@ public class PoiExcelFileUtil {
     }
 
     private static double getDoubleValue(BigDecimal obj) {
-       return Double.parseDouble(obj.stripTrailingZeros().toPlainString());
+        return Double.parseDouble(obj.stripTrailingZeros().toPlainString());
     }
 
     /**

@@ -16,7 +16,7 @@ public interface InboundManifestMsgService {
     /**
      * 获取数据
      *
-     * @param manifestId 货单ID
+     * @param manifestId    货单ID
      * @param operationNode 操作节点
      * @return 结果
      */
@@ -39,6 +39,7 @@ public interface InboundManifestMsgService {
 
     /**
      * 根据货单ID查询数据
+     *
      * @param manifiestIds
      * @return
      */

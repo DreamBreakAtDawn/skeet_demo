@@ -17,7 +17,7 @@ public interface InboundManifestMsgDao extends BaseDao<InboundManifestMsg> {
     /**
      * 获取数据
      *
-     * @param manifestId 货单ID
+     * @param manifestId    货单ID
      * @param operationNode 操作节点
      * @return 结果
      */

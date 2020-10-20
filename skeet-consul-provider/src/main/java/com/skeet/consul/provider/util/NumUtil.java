@@ -10,7 +10,8 @@ import java.util.Random;
  */
 public class NumUtil {
 
-    private NumUtil() {}
+    private NumUtil() {
+    }
 
     public static void main(String[] args) {
         int[] ints = buildRandomIntArray(100);

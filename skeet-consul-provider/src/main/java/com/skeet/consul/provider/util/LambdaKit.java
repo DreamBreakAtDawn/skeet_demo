@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * 常用java8的lambda工具类
- * 
+ *
  * @author zhangh
  * @date 2018年3月10日
  * @since
@@ -26,6 +26,7 @@ public class LambdaKit {
     /**
      * List<T> 转为 Map<K,T>，过滤重复key值
      * <p>例：Lambdakit.listToMap(lstSku, OtaskSkuDTO::getSkuId)
+     *
      * @param lstObj
      * @param keyMapper
      * @return
@@ -37,7 +38,7 @@ public class LambdaKit {
         return list.stream().collect(Collectors.toMap(keyMapper, Function.identity(), (key1, key2) -> key2));
     }
 
-    public static <K,V,T> Map<K, V> listToMap(Collection<T> list, Function<T, K> keyMapper, Function<T, V> valueMapper) {
+    public static <K, V, T> Map<K, V> listToMap(Collection<T> list, Function<T, K> keyMapper, Function<T, V> valueMapper) {
         if (CollectionUtils.isEmpty(list)) {
             return Maps.newHashMap();
         }
@@ -47,6 +48,7 @@ public class LambdaKit {
 
     /**
      * 合计
+     *
      * @param lstObj
      * @param mapper
      * @return
@@ -57,9 +59,10 @@ public class LambdaKit {
         }
         return list.stream().mapToInt(mapper).sum();
     }
-    
+
     /**
      * 合计
+     *
      * @param lstObj
      * @param mapper
      * @return
@@ -70,10 +73,11 @@ public class LambdaKit {
         }
         return list.stream().mapToDouble(mapper).sum();
     }
-    
+
     /**
      * 过滤
      * <p>例：LambdaKit.filter(lstOtask, task -> task.getStatus().equals(taskStatus))
+     *
      * @param lstObj
      * @param predicate
      * @return
@@ -88,6 +92,7 @@ public class LambdaKit {
     /**
      * 数据根据条件去重
      * <p>例：LambdaKit.deduplication(lstOtask, Otask::getTaskNo)
+     *
      * @param list
      * @param function
      * @param <T>
@@ -104,6 +109,7 @@ public class LambdaKit {
 
     /**
      * 转换集合属性
+     *
      * @param lstObj
      * @param predicate
      * @return
@@ -114,8 +120,10 @@ public class LambdaKit {
         }
         return list.stream().map(mapper).collect(Collectors.toList());
     }
+
     /**
      * 获取唯一属性
+     *
      * @param lstObj
      * @param predicate
      * @return
@@ -129,6 +137,7 @@ public class LambdaKit {
 
     /**
      * 按属性分组(相同属性Map.get->List)
+     *
      * @param list
      * @param keyFunction
      * @return
@@ -144,6 +153,7 @@ public class LambdaKit {
      * 查找符合条件的第一个对象，如果没有符合条件的对象，则返回{@code null}
      *
      * <p>例：LambdaKit.findFirst(lstOtask, task -> task.getStatus().equals(taskStatus))
+     *
      * @param list
      * @param predicate
      * @return
@@ -164,7 +174,7 @@ public class LambdaKit {
     /**
      * 根据对象的属性去重ValueAddedConsignmentSkuDTO
      *
-     * @param list 原列表
+     * @param list         原列表
      * @param keyExtractor 属性映射
      * @param <T>
      * @return 去重后的列表

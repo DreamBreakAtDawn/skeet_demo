@@ -94,8 +94,8 @@ public class FileUtil {
      * @param targetDirectoryPath 文件分割后存放的目标目录
      */
     public static void splitDataToSaveFileByCsv(int rows,
-                                           String sourceFilePath,
-                                           String targetDirectoryPath) {
+                                                String sourceFilePath,
+                                                String targetDirectoryPath) {
         splitDataToSaveFile(rows, sourceFilePath, targetDirectoryPath, "csv");
     }
 
@@ -105,7 +105,7 @@ public class FileUtil {
      * @param rows                为多少行一个文件
      * @param sourceFilePath      为源文件路径
      * @param targetDirectoryPath 文件分割后存放的目标目录
-     * @param targetFileSuffix 文件分割后的扩展名
+     * @param targetFileSuffix    文件分割后的扩展名
      */
     public static void splitDataToSaveFile(int rows,
                                            String sourceFilePath,
@@ -264,7 +264,7 @@ public class FileUtil {
     /**
      * 写入到txt，对于相同的{@code path}，每次执行该方法都会生成新文件
      *
-     * @param path 文件全路径名
+     * @param path     文件全路径名
      * @param dataList 待写入数据集合
      */
     @SuppressWarnings("all")
@@ -275,8 +275,8 @@ public class FileUtil {
     /**
      * 写入到txt，对于相同的{@code path}，每次执行该方法都会生成新文件
      *
-     * @param path 文件全路径名
-     * @param dataList 待写入数据集合
+     * @param path       文件全路径名
+     * @param dataList   待写入数据集合
      * @param genNewFile 是否写入到新文件中
      */
     public static void writeStringListToFile(String path, Collection<String> dataList, boolean genNewFile) {

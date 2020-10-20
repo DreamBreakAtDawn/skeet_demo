@@ -30,7 +30,8 @@
         <mybatis.version>3.4.6</mybatis.version>
         <druid.version>1.1.20</druid.version>
         <mysql.version>5.1.47</mysql.version>
-<!--        <google.guava.version>26.0-jre</google.guava.version>-->
+        <qt-avalanche-code.version>1.0</qt-avalanche-code.version>
+        <!--        <google.guava.version>26.0-jre</google.guava.version>-->
     </properties>
 
     <dependencyManagement>
@@ -78,13 +79,18 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.qtrade</groupId>
+                <artifactId>qt-avalanche-code</artifactId>
+                <version>${qt-avalanche-code.version}</version>
+            </dependency>
 
             <!-- guava -->
-<!--            <dependency>-->
-<!--                <groupId>com.google.guava</groupId>-->
-<!--                <artifactId>guava</artifactId>-->
-<!--                <version>${google.guava.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.google.guava</groupId>-->
+            <!--                <artifactId>guava</artifactId>-->
+            <!--                <version>${google.guava.version}</version>-->
+            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

@@ -29,7 +29,7 @@ public class LongSumTest {
         stopWatch.stop();
 
         stopWatch.start("fork/join");
-        LongSum ls = new LongSum(array, 0 , array.length);
+        LongSum ls = new LongSum(array, 0, array.length);
         ForkJoinPool forkJoinPool = new ForkJoinPool(NCPU);
         ForkJoinTask<Long> result = forkJoinPool.submit(ls);
         System.out.println("fork/join sum = " + result.get());

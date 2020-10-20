@@ -21,7 +21,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InventoryChargeDTO implements Serializable{
+public class InventoryChargeDTO implements Serializable {
 
     private static final long serialVersionUID = -7206480478555144169L;
 
@@ -80,7 +80,7 @@ public class InventoryChargeDTO implements Serializable{
     /**
      * 库位类型
      */
-    @SerializedName(value="locationType", alternate = {"extraCode"})
+    @SerializedName(value = "locationType", alternate = {"extraCode"})
     private String locationType;
 
     /**
@@ -101,7 +101,7 @@ public class InventoryChargeDTO implements Serializable{
     /**
      * 当前周期内的计费天数（如计费周期7天计一次费，则计费天数最多为7天）
      */
-    private Integer  chargeDayNum;
+    private Integer chargeDayNum;
 
     /**
      * 库龄

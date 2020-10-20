@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * 库存明细快照
+ *
  * @author huangps
  * @date 2018/7/3.
  */

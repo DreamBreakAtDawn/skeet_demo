@@ -1,5 +1,6 @@
 package com.skeet.consul.provider;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -16,10 +17,13 @@ import org.springframework.context.annotation.FilterType;
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.skeet.consul.provider.mine.*"))
 //@ComponentScan(basePackages = {"com.skeet.consul.provider"})
 //@MapperScan(basePackages = {"com.skeet.consul.provider.project.order.dao"})
+@Slf4j
 public class ConsulProviderApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(ConsulProviderApplication.class, args);
+        log.info("-------------------Application started-------------------");
+        System.out.println();
     }
 
 //    @Override

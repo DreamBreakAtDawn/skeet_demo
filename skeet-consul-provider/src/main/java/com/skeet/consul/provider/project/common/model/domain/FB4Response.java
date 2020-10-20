@@ -129,7 +129,7 @@ public class FB4Response implements Serializable {
         result.setDefPartFailMsg();
         return result;
     }
-    
+
     /**
      * 构建部分成功返回信息
      */
@@ -239,9 +239,9 @@ public class FB4Response implements Serializable {
     /**
      * 构建失败的返回信息 根据异常分类
      */
-    public static FB4Response buildFailResult(String msgCode,Exception e) {
+    public static FB4Response buildFailResult(String msgCode, Exception e) {
         FB4Response result = new FB4Response();
-        result.setExceptionMsg(msgCode,e);
+        result.setExceptionMsg(msgCode, e);
         return result;
     }
 
@@ -364,49 +364,49 @@ public class FB4Response implements Serializable {
     }
 
 
-    public FB4Error buildError(Exception e){
+    public FB4Error buildError(Exception e) {
         FB4Error error = null;
         String exceptionName = e.getClass().getSimpleName();
         if (DO_ERROR_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName, e.getMessage());
+            error = new FB4Error(exceptionName, e.getMessage());
         } else if (DATA_ACCESS_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"数据库操作失败！");
+            error = new FB4Error(exceptionName, "数据库操作失败！");
         } else if (NULL_POINTER_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"调用了未经初始化的对象或者是不存在的对象！");
+            error = new FB4Error(exceptionName, "调用了未经初始化的对象或者是不存在的对象！");
         } else if (IO_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"IO异常！");
+            error = new FB4Error(exceptionName, "IO异常！");
         } else if (CLASS_NOT_FOUND_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"指定的类不存在！");
+            error = new FB4Error(exceptionName, "指定的类不存在！");
         } else if (ARITHMETIC_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"数学运算异常！");
+            error = new FB4Error(exceptionName, "数学运算异常！");
         } else if (ARRAY_INDEX_OUT_OF_BOUNDS_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"数组下标越界！");
+            error = new FB4Error(exceptionName, "数组下标越界！");
         } else if (ILLEGAL_ARGUMENT_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"方法的参数错误！");
+            error = new FB4Error(exceptionName, "方法的参数错误！");
         } else if (CLASS_NOT_FOUND_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"类型强制转换错误！");
+            error = new FB4Error(exceptionName, "类型强制转换错误！");
         } else if (SECURITY_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"违背安全原则异常！");
+            error = new FB4Error(exceptionName, "违背安全原则异常！");
         } else if (SQL_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"操作数据库异常！");
+            error = new FB4Error(exceptionName, "操作数据库异常！");
         } else if (NO_SUCH_METHOD_ERROR.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"方法末找到异常！");
+            error = new FB4Error(exceptionName, "方法末找到异常！");
         } else if (INTERNAL_ERROR.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"Java虚拟机发生了内部错误！");
+            error = new FB4Error(exceptionName, "Java虚拟机发生了内部错误！");
         } else if (SCHEDULER_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"JOB任务调度出现异常！");
+            error = new FB4Error(exceptionName, "JOB任务调度出现异常！");
         } else if (DATA_INTEGRITY_VIOLATION_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"数据完整性冲突异常！");
+            error = new FB4Error(exceptionName, "数据完整性冲突异常！");
         } else if (HTTP_CLIENT_ERROR_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"请求发生错误！");
+            error = new FB4Error(exceptionName, "请求发生错误！");
         } else if (RETRYABLE_EXCEPTION.equals(exceptionName)) {
-            error  = new FB4Error(exceptionName,"请求超时！");
-        } else if(APIJSON_EXCEPTION.equals(exceptionName)){
-            error  = new FB4Error(exceptionName,"API请求JSON数据异常！");
-        } else if(DUPLICATE_KEY_EXCEPTION.equals(exceptionName)){
-            error  = new FB4Error(exceptionName,"数据库存在相同的唯一索引");
+            error = new FB4Error(exceptionName, "请求超时！");
+        } else if (APIJSON_EXCEPTION.equals(exceptionName)) {
+            error = new FB4Error(exceptionName, "API请求JSON数据异常！");
+        } else if (DUPLICATE_KEY_EXCEPTION.equals(exceptionName)) {
+            error = new FB4Error(exceptionName, "数据库存在相同的唯一索引");
         } else {
-            error  = new FB4Error(SYSTEM_EXCEPTION,"程序内部错误，操作失败！");
+            error = new FB4Error(SYSTEM_EXCEPTION, "程序内部错误，操作失败！");
         }
         return error;
     }
@@ -446,9 +446,9 @@ public class FB4Response implements Serializable {
             errorMessage = "数据完整性冲突异常！";
         } else if (HTTP_CLIENT_ERROR_EXCEPTION.equals(exceptionName)) {
             errorMessage = "请求发生错误！";
-        } else if (RETRYABLE_EXCEPTION.equals(exceptionName)){
+        } else if (RETRYABLE_EXCEPTION.equals(exceptionName)) {
             errorMessage = "服务调用失败！";
-        } else if(APIJSON_EXCEPTION.equals(exceptionName)){
+        } else if (APIJSON_EXCEPTION.equals(exceptionName)) {
             errorMessage = "API 请求JSON数据异常";
         } else {
             errorMessage = "程序内部错误，操作失败！";

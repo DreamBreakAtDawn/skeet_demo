@@ -28,10 +28,10 @@ public class InventorySnapshotServiceImplTest {
 
     @Test
     public void testSelectChargeData() {
-        List<String> customerIds = Arrays.asList("P5ZXNCM","P622C4A","CNQAHJQ6","T5ZMVP3","75Z4SF6","P5Z2BR7","CNUB3M66",
-                "W5Z6WB5","BUYDDXD","L5ZX5X6","B5ZMYZ9","T5ZMWRE","T5Z4PA8","75ZMF96","CNCGLJL5","CNTWL9F7","H5Z26W4",
-                "CNHNDJD1","CN47NZV2","W5Z4YXD","75ZXFG3","CNDW2XN4","H5Z4JWA","CN64A9A6","L5ZXE3B","75Z45AA","CNHBHKA7",
-                "T5Z4LKA","CNAFMH85","B5ZMMUA","UBLAXMF","E5Z34GE","CNRPJJ76","CNNMBMJ5","H5Z2G54","75Z2FM2","CNJMZTF4","P5ZX5S8");
+        List<String> customerIds = Arrays.asList("P5ZXNCM", "P622C4A", "CNQAHJQ6", "T5ZMVP3", "75Z4SF6", "P5Z2BR7", "CNUB3M66",
+                "W5Z6WB5", "BUYDDXD", "L5ZX5X6", "B5ZMYZ9", "T5ZMWRE", "T5Z4PA8", "75ZMF96", "CNCGLJL5", "CNTWL9F7", "H5Z26W4",
+                "CNHNDJD1", "CN47NZV2", "W5Z4YXD", "75ZXFG3", "CNDW2XN4", "H5Z4JWA", "CN64A9A6", "L5ZXE3B", "75Z45AA", "CNHBHKA7",
+                "T5Z4LKA", "CNAFMH85", "B5ZMMUA", "UBLAXMF", "E5Z34GE", "CNRPJJ76", "CNNMBMJ5", "H5Z2G54", "75Z2FM2", "CNJMZTF4", "P5ZX5S8");
 
 //        List<Integer> snapshotTimes = TimeUtil.getDateRegion(20200101, 20200331);
         List<Integer> snapshotTimes = Lists.newArrayList(20200229);

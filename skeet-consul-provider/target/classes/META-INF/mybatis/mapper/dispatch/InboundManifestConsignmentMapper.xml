@@ -5,5 +5,4 @@
 <mapper namespace="com.skeet.consul.provider.project.dispatch.dao.mapper.InboundManifestConsignmentMapper">
 
 
-
 </mapper>

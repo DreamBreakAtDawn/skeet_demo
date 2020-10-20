@@ -141,8 +141,8 @@ public class SimpleConverter {
      */
     public static String filterCharacter(String character) {
         StringBuffer buffer = new StringBuffer();
-        for(int i=0;i<character.length();i++){
-            if(Character.isDigit(character.charAt(i))){
+        for (int i = 0; i < character.length(); i++) {
+            if (Character.isDigit(character.charAt(i))) {
                 buffer.append(character.charAt(i));
             }
         }
@@ -151,6 +151,7 @@ public class SimpleConverter {
 
     /**
      * 获取值为null的属性名称集合
+     *
      * @param source
      * @return
      */
@@ -159,7 +160,7 @@ public class SimpleConverter {
         java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
 
         Set<String> emptyNames = new HashSet<String>();
-        for(java.beans.PropertyDescriptor pd : pds) {
+        for (java.beans.PropertyDescriptor pd : pds) {
             Object srcValue = src.getPropertyValue(pd.getName());
             if (srcValue == null) {
                 emptyNames.add(pd.getName());

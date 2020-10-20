@@ -26,7 +26,7 @@ public class BeanConfigTest {
     @Test
     public void testPerson() {
         Map<String, Person> beansOfType = context.getBeansOfType(Person.class);
-        beansOfType.forEach((k,v) -> {
+        beansOfType.forEach((k, v) -> {
             System.out.println(k + "：" + v);
         });
     }

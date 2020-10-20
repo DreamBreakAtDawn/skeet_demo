@@ -25,24 +25,24 @@ public class MyStringUtil {
 //        String s = buildQueryIn(Lists.newArrayList("123", "456"));
 //        System.out.println(s);
 
-        String columnDefine =  "  `tid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
-                "  `batch_no` varchar(32) NOT NULL DEFAULT '' COMMENT '上传批次号',\n" +
-                "  `row_no` varchar(1000) NOT NULL DEFAULT '' COMMENT '行号集合以逗号分割',\n" +
-                "  `column_name` varchar(50) NOT NULL DEFAULT '' COMMENT '列名',\n" +
-                "  `error_code` varchar(256) NOT NULL DEFAULT '' COMMENT '错误编码',\n" +
+        String columnDefine = " `tid` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                "  `user_id` varchar(20) NOT NULL DEFAULT '' COMMENT '用户ID',\n" +
+                "  `username` varchar(10) NOT NULL DEFAULT '' COMMENT '用户名',\n" +
+                "  `password` varchar(20) NOT NULL DEFAULT '' COMMENT '密码',\n" +
+                "  `email` varchar(50) NOT NULL DEFAULT '' COMMENT '用户邮箱',\n" +
+                "  `department` varchar(20) NOT NULL DEFAULT '' COMMENT '用户所属部门',\n" +
+                "  `role` varchar(10) NOT NULL DEFAULT '0' COMMENT '用户角色',\n" +
                 "  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
-                "  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'";
+                "  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'";
         System.out.println(convertColumnToEntity(columnDefine));
-//        System.out.println(convertColumnToMybatisResultMap(columnDefine));
     }
 
     /**
-     *
      * @param str
      * @param obj
      * @return
      */
-    public static String replace(String str, Object obj)  {
+    public static String replace(String str, Object obj) {
         String tarStr = str;
         try {
             Class clazz = obj.getClass();
@@ -105,7 +105,7 @@ public class MyStringUtil {
     }
 
     private static String firstToUpperCase(String i) {
-        return i.substring(0,1).toUpperCase() + i.substring(1);
+        return i.substring(0, 1).toUpperCase() + i.substring(1);
     }
 
     /**
