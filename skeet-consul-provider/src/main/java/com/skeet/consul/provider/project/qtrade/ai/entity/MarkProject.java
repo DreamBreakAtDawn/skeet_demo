@@ -1,5 +1,7 @@
 package com.skeet.consul.provider.project.qtrade.ai.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
  * @author chengsj
  * @date 2020/10/20 11:31
  */
+@Data
 public class MarkProject {
 
     /**
@@ -33,7 +36,7 @@ public class MarkProject {
     /**
      * 项目所有者
      */
-    private String owner;
+    private String createUsername;
 
     /**
      * 导入时间
@@ -64,6 +67,11 @@ public class MarkProject {
      * 备注
      */
     private String remark;
+
+    /**
+     * 标签配置
+     */
+    private String labelConfig;
 
     /**
      * 创建时间

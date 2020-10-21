@@ -1,6 +1,9 @@
-package com.skeet.consul.provider.project.qtrade.ai.entity;
+package com.skeet.consul.provider.project.qtrade.ai.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -11,7 +14,10 @@ import java.util.Date;
  * @date 2020/10/20 14:58
  */
 @Data
-public class MarkLabelConfig {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MarkLabelConfigDTO {
 
     /**
      * 标签ID

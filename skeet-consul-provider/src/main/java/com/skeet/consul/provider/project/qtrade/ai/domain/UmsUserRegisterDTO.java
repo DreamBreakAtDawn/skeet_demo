@@ -24,7 +24,7 @@ public class UmsUserRegisterDTO {
 
     public static void main(String[] args) {
         UmsUserRegisterDTO dto = new UmsUserRegisterDTO();
-        dto.setUsername("chengsj");
+        dto.setUsername("张三");
         dto.setPassword("123456");
         System.out.println(JsonUtils.beanToJson(dto));
     }

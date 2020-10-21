@@ -25,13 +25,18 @@ public class MyStringUtil {
 //        String s = buildQueryIn(Lists.newArrayList("123", "456"));
 //        System.out.println(s);
 
-        String columnDefine = " `tid` int(11) NOT NULL AUTO_INCREMENT,\n" +
-                "  `user_id` varchar(20) NOT NULL DEFAULT '' COMMENT '用户ID',\n" +
-                "  `username` varchar(10) NOT NULL DEFAULT '' COMMENT '用户名',\n" +
-                "  `password` varchar(20) NOT NULL DEFAULT '' COMMENT '密码',\n" +
-                "  `email` varchar(50) NOT NULL DEFAULT '' COMMENT '用户邮箱',\n" +
-                "  `department` varchar(20) NOT NULL DEFAULT '' COMMENT '用户所属部门',\n" +
-                "  `role` varchar(10) NOT NULL DEFAULT '0' COMMENT '用户角色',\n" +
+        String columnDefine = " `tid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
+                "  `project_id` varchar(20) NOT NULL DEFAULT '' COMMENT '项目ID',\n" +
+                "  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '项目名称',\n" +
+                "  `description` varchar(500) NOT NULL DEFAULT '' COMMENT '项目描述',\n" +
+                "  `owner` varchar(20) NOT NULL DEFAULT '' COMMENT '项目所有者',\n" +
+                "  `import_time` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00' COMMENT '导入时间',\n" +
+                "  `project_type` varchar(20) NOT NULL DEFAULT '' COMMENT '项目类型',\n" +
+                "  `data_type` varchar(1) NOT NULL DEFAULT '' COMMENT '数据类型，如单轮/多轮',\n" +
+                "  `data_finish_count` int(11) NOT NULL DEFAULT '0' COMMENT '标注数据完成数',\n" +
+                "  `data_total_count` int(11) NOT NULL DEFAULT '0' COMMENT '标注数据总数',\n" +
+                "  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',\n" +
+                "  `label_config` text COMMENT '标签配置',\n" +
                 "  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
                 "  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'";
         System.out.println(convertColumnToEntity(columnDefine));

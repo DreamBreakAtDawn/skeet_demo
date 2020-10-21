@@ -1,5 +1,7 @@
 package com.skeet.consul.provider.project.qtrade.ai.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -8,12 +10,8 @@ import java.util.Date;
  * @author chengsj
  * @date 2020/10/20 15:30
  */
+@Data
 public class UmsUser {
-
-    /**
-     * 用户ID
-     */
-    private String userId;
 
     /**
      * 用户名

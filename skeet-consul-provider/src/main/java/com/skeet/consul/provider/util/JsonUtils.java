@@ -177,7 +177,7 @@ class GsonUtil {
         GsonBuilder gb = new GsonBuilder();
         gb.setDateFormat(DATE_FORMAT);
         gb.registerTypeAdapter(Date.class, new DateAdapter());
-        gb.serializeNulls();
+//        gb.serializeNulls();
         return gb.create();
     }
 }
