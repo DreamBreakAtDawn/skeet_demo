@@ -100,12 +100,14 @@ public class MarkProjectDataDTO {
         markProjectDataDTO.setOriginalText("你好，2.78%投 2000w");
 
         MarkLabelConfigDTO config_1 = new MarkLabelConfigDTO();
+        config_1.setLabelId("MPL202010210001");
         config_1.setColor("#FFFFFF");
         config_1.setElement("test");
         config_1.setShortcutKey("a");
         config_1.setType("投标");
 
         MarkLabelConfigDTO config_2 = new MarkLabelConfigDTO();
+        config_2.setLabelId("MPL202010210002");
         config_2.setColor("#000000");
         config_2.setElement("test");
         config_2.setShortcutKey("b");
@@ -116,8 +118,6 @@ public class MarkProjectDataDTO {
         MarkProjectDataDTO markProjectDataDTO_2 = new MarkProjectDataDTO();
         markProjectDataDTO_2.setProjectId("MP202010210001");
         markProjectDataDTO_2.setTextSequence(1);
-        markProjectDataDTO_2.setProjectName("标位");
-        markProjectDataDTO_2.setOriginalText("你好，2.78%投 2000w");
         markProjectDataDTO_2.setMarkIntention("投标");
         markProjectDataDTO_2.setMarkType("成交");
         markProjectDataDTO_2.setMarkEntity(
@@ -126,19 +126,13 @@ public class MarkProjectDataDTO {
                                 .builder()
                                 .startIndex(3)
                                 .endIndex(6)
-                                .color("#000000")
-                                .element("test")
-                                .shortcutKey("b")
-                                .type("转债")
+                                .labelId("MPL202010210001")
                                 .build(),
                         MarkProjectDataEntityDTO
                                 .builder()
                                 .startIndex(9)
                                 .endIndex(14)
-                                .color("#FFFFFF")
-                                .element("test")
-                                .shortcutKey("c")
-                                .type("基金")
+                                .labelId("MPL202010210002")
                                 .build()
 
                 )));

@@ -25,9 +25,9 @@ public class MarkLabelConfigDTO {
     private String labelId;
 
     /**
-     * 用户ID
+     * 项目ID
      */
-    private String userId;
+    private String projectId;
 
     /**
      * 标签颜色

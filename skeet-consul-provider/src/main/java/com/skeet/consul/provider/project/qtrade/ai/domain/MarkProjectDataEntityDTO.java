@@ -21,6 +21,8 @@ public class MarkProjectDataEntityDTO {
 
     private Integer endIndex;
 
+    private String labelId;
+
     /**
      * 标签颜色
      */
