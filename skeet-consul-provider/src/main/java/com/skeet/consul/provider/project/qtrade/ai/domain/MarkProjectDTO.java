@@ -112,10 +112,24 @@ public class MarkProjectDTO {
         System.out.println(JsonUtils.beanToJson(dto));
 
 
+        MarkLabelConfigDTO config_1 = new MarkLabelConfigDTO();
+        config_1.setColor("#FFFFFF");
+        config_1.setElement("test");
+        config_1.setShortcutKey("a");
+        config_1.setType("投标");
+
+        MarkLabelConfigDTO config_2 = new MarkLabelConfigDTO();
+        config_2.setColor("#000000");
+        config_2.setElement("test");
+        config_2.setShortcutKey("b");
+        config_2.setType("转债");
+
         MarkProjectDTO dto_2 = new MarkProjectDTO();
         dto_2.setName("标位");
         dto_2.setProjectType("询价");
         dto_2.setDescription("具体描述");
+        dto_2.setDataType("0");
+        dto_2.setLabelConfig(JsonUtils.beanToJson(Lists.newArrayList(config_1, config_2)));
         dto_2.setProjectDataDTOs(Lists.newArrayList(
                 MarkProjectDataDTO.builder().originalText("原始文本1").build(),
                 MarkProjectDataDTO.builder().originalText("原始文本2").build()
