@@ -108,4 +108,38 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://dev.qtrade.com.cn:8061/nexus/repository/maven-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+
+        <!-- 配置私服仓库 -->
+        <repository>
+            <id>qtrade-repo</id>
+            <name>qtrade-repo</name>
+            <url>http://dev.qtrade.com.cn:8061/nexus/repository/qtrade-repo/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+
+        <!-- 私服release仓库 -->
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://dev.qtrade.com.cn:8061/nexus/repository/maven-releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
+
 </project>
