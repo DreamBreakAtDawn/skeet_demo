@@ -10,6 +10,7 @@ import com.skeet.consul.provider.project.order.model.domain.InventorySnapshotDTO
 import com.skeet.consul.provider.project.order.model.entity.InventorySnapshot;
 import com.skeet.consul.provider.project.order.model.export.InventoryChargeExportDTO;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -41,13 +42,13 @@ public class InventorySnapshotDaoImpl extends BaseDaoImpl<InventorySnapshot> imp
 
     @Override
     public int selectDataCount(InventoryCommonCriteria criteria) {
-//        Integer snapshotTime = criteria.getSnapshotTime();
-//        List<String> warehouseCodeList = criteria.getWarehouseCodeList();
-//
-//        Example example = new Example(InventorySnapshot.class);
-//        example.createCriteria()
-//                .andEqualTo("snapshotTime", snapshotTime)
-//                .andIn("warehouseCode", warehouseCodeList);
+        Integer snapshotTime = criteria.getSnapshotTime();
+        List<String> warehouseCodeList = criteria.getWarehouseCodeList();
+
+        Example example = new Example(InventorySnapshot.class);
+        example.createCriteria()
+                .andEqualTo("snapshotTime", snapshotTime)
+                .andIn("warehouseCode", warehouseCodeList);
 //        return inventorySnapshotMapper.selectCountByExample(example);
         return 0;
     }

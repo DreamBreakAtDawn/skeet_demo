@@ -6,6 +6,7 @@ import com.skeet.consul.provider.project.dispatch.dao.InboundManifestConsignment
 import com.skeet.consul.provider.project.dispatch.dao.mapper.InboundManifestConsignmentMapper;
 import com.skeet.consul.provider.project.dispatch.model.entity.InboundManifestConsignment;
 import org.springframework.stereotype.Repository;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,13 +28,12 @@ public class InboundManifestConsignmentDaoImpl extends BaseDaoImpl<InboundManife
 
     @Override
     public List<InboundManifestConsignment> obtainData(String manifestId, String operationNode, String consignmentNo) {
-//        Example example = new Example(InboundManifestConsignment.class);
-//        example.createCriteria()
-//                .andEqualTo("manifestId", manifestId)
-//                .andEqualTo("operationNode", operationNode)
-//                .andEqualTo("consignmentNo", consignmentNo);
-//
-//        return inboundManifestConsignmentMapper.selectByExample(example);
-        return null;
+        Example example = new Example(InboundManifestConsignment.class);
+        example.createCriteria()
+                .andEqualTo("manifestId", manifestId)
+                .andEqualTo("operationNode", operationNode)
+                .andEqualTo("consignmentNo", consignmentNo);
+
+        return inboundManifestConsignmentMapper.selectByExample(example);
     }
 }

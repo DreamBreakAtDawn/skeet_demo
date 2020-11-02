@@ -16,6 +16,8 @@ public class DeadLockTest {
     private static Object lock2 = new Object();
 
     public static void main(String[] args) {
+        System.out.println("4" + null);
+
         new Thread(() -> {
             synchronized (lock1) {
                 try {
