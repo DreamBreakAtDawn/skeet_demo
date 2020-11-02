@@ -1,1 +1,36 @@
 /target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.eml
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+LOG_PATH_IS_UNDEFINED
+
+app_box_log*
+
+*.log
+/app-box-base/target/classes/META-INF/
+/app-box-base/target/
+/app-box-api/target/classes/
+/app-box-api/target/
