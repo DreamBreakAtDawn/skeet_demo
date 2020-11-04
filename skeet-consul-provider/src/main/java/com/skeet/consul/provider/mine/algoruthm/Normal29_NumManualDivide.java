@@ -26,9 +26,10 @@ package com.skeet.consul.provider.mine.algoruthm;
 public class Normal29_NumManualDivide {
 
     public static void main(String[] args) {
-        int dividend = -2147483648;
-        int divisor = -1;
-        int result = divide(dividend, divisor);
+        int dividend = 2147483647;
+        int divisor = 2;
+//        int result = divide(dividend, divisor);
+        int result = divide_Best(dividend, divisor);
         System.out.println(result);
     }
 
@@ -61,5 +62,33 @@ public class Normal29_NumManualDivide {
         }
 
         return result;
+    }
+
+    private static int divide_Best(int dividend, int divisor) {
+        if (dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE;
+        if (divisor == -1) return -dividend;
+        if (divisor == 1) return dividend;
+
+        int sign = dividend ^ divisor;
+
+        if (dividend > 0) dividend = -dividend;
+        if (divisor > 0) divisor = -divisor;
+
+        int count = div(dividend, divisor);
+        return (sign >= 0) ? count : -count;
+    }
+
+    private static int div(int dividend, int divisor) {
+        int move = 0;
+        int count = 1;
+        if (dividend > divisor) return 0;
+
+        int divTmp = divisor;
+        while (Integer.MIN_VALUE >> 1 <= divTmp && dividend <= divTmp << 1) {
+            divTmp = divTmp << 1;
+            move++;
+        }
+
+        return (count << move) + div(dividend - divTmp, divisor);
     }
 }
