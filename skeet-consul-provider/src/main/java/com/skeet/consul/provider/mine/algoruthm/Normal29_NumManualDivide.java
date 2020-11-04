@@ -84,6 +84,7 @@ public class Normal29_NumManualDivide {
         if (dividend > divisor) return 0;
 
         int divTmp = divisor;
+        // Integer.MIN_VALUE >> 1 <= divTmp 防止int型溢出
         while (Integer.MIN_VALUE >> 1 <= divTmp && dividend <= divTmp << 1) {
             divTmp = divTmp << 1;
             move++;
