@@ -1,5 +1,6 @@
 package com.skeet.consul.provider.mine.spring.aop;
 
+import com.skeet.consul.provider.mine.spring.aop.entity.InstanceA;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -12,8 +13,8 @@ public class MainClass {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MainConfig.class);
-//        InstanceA instance = (InstanceA) ctx.getBean("instanceA");
-//        instance.eat();
+        InstanceA instance = (InstanceA) ctx.getBean("instanceA");
+        instance.said();
 
 //        InstanceInterface instanceB = (InstanceInterface) ctx.getBean("instanceB");
 //        instanceB.run();

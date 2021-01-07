@@ -1,8 +1,7 @@
 package com.skeet.consul.provider.mine.spring.aop.entity;
 
+import com.skeet.consul.provider.mine.spring.aop.InstanceFather;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * Desc:
@@ -11,10 +10,7 @@ import javax.annotation.Resource;
  * @date 2020/7/30 15:03
  */
 @Component
-public class InstanceB {
-
-    @Resource
-    private InstanceA instanceA;
+public class InstanceB extends InstanceFather {
 
     public void run() {
         System.out.println("instanceB run......");

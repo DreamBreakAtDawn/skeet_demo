@@ -16,9 +16,16 @@ import org.springframework.stereotype.Component;
 @Order(7)
 public class MainAspect {
 
-    @Pointcut("execution(public * com.skeet.consul.provider.mine.spring.aop..*.*(..))")
+//    @Pointcut("execution(public * com.skeet.consul.provider.mine.spring.aop.entity.InstanceA.*(..)) || " +
+//            "execution(public * com.skeet.consul.provider.mine.spring.aop.entity.InstanceB.run*(..)) || " +
+//            "execution(public * com.skeet.consul.provider.mine.spring.aop.entity.InstanceA.eat*(..))")
+//    public void log() {
+//    }
+
+    @Pointcut("this(com.skeet.consul.provider.mine.spring.aop.InstanceFather).*(..))")
     public void log() {
     }
+
 
     @Around("log()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {

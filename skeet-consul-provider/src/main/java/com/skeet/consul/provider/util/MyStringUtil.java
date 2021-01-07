@@ -21,25 +21,54 @@ import java.util.regex.Pattern;
  */
 public class MyStringUtil {
 
+    private static final Pattern COLUMN_DEFINE_PATTERN = Pattern.compile("^\\s*`(.*)` ([a-zA-Z]*)(\\(.*\\))? .*'(.*)'$");
+
     public static void main(String[] args) {
 //        String s = buildQueryIn(Lists.newArrayList("123", "456"));
 //        System.out.println(s);
 
-        String columnDefine = " `tid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
-                "  `project_id` varchar(20) NOT NULL DEFAULT '' COMMENT '项目ID',\n" +
-                "  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '项目名称',\n" +
-                "  `description` varchar(500) NOT NULL DEFAULT '' COMMENT '项目描述',\n" +
-                "  `owner` varchar(20) NOT NULL DEFAULT '' COMMENT '项目所有者',\n" +
-                "  `import_time` timestamp NOT NULL DEFAULT '1970-01-02 00:00:00' COMMENT '导入时间',\n" +
-                "  `project_type` varchar(20) NOT NULL DEFAULT '' COMMENT '项目类型',\n" +
-                "  `data_type` varchar(1) NOT NULL DEFAULT '' COMMENT '数据类型，如单轮/多轮',\n" +
-                "  `data_finish_count` int(11) NOT NULL DEFAULT '0' COMMENT '标注数据完成数',\n" +
-                "  `data_total_count` int(11) NOT NULL DEFAULT '0' COMMENT '标注数据总数',\n" +
-                "  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',\n" +
-                "  `label_config` text COMMENT '标签配置',\n" +
-                "  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
-                "  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'";
-        System.out.println(convertColumnToEntity(columnDefine));
+        String columnDefine = " `Flimit_multiple` varchar(50) DEFAULT NULL COMMENT '边际倍数',\n" +
+                "  `Fall_multiple` varchar(50) DEFAULT NULL COMMENT '全场倍数',\n" +
+                "  `Flimit_rate` varchar(64) DEFAULT NULL COMMENT '边际利率（%/年）',\n" +
+                "  `Fweighting_rate` varchar(50) DEFAULT NULL COMMENT '加权利率（%/年）',\n" +
+                "  `Flimit_price` varchar(50) DEFAULT NULL COMMENT '边际价格（元）',\n" +
+                "  `Fweighting_price` varchar(50) DEFAULT NULL COMMENT '加权价格（元）',\n" +
+                "  `Fsmall_range` varchar(50) DEFAULT NULL COMMENT '小区间范围（每一轮最新指导区间）',\n" +
+                "  `Fsmall_range_lower_Side` varchar(50) DEFAULT NULL COMMENT '指导区间下限',\n" +
+                "  `Fsmall_range_upper_Side` varchar(50) DEFAULT NULL COMMENT '指导区间上限',\n" +
+                "  `Foperator` varchar(50) DEFAULT NULL COMMENT '操作人'";
+//        System.out.println(convertColumnToEntity(columnDefine, "F"));
+        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
+    }
+
+    private static String getInsertSqlForBondHeaderDictionary(String columnDefine, String removePrefix) {
+        if (StringUtils.isBlank(columnDefine)) {
+            return "";
+        }
+
+//        String sqlTemplate = "INSERT INTO `db_appletree`.`t_org_ad_bond_header_data_dictionary` (
+//        `Fid`, `Fbond_type`, `Fheader_name`, `Fchinese_header_name`, `Fcolumn_name`, `Fdata_status`)
+//        VALUES ('1', '1', 'orgRole', '我司角色', 'Forg_role', '1');";
+        String sqlTemplate = "INSERT INTO `db_primary_bond_sale`.`t_org_ad_bond_header_data_dictionary` (" +
+                "`Fheader_name`, `Fchinese_header_name`, `Fcolumn_name`, `Fcolumn_source`, `column_limit`, `Fdata_status`) " +
+                "VALUES ('%s', '%s', '%s', '%s', %s, %s);";
+
+        List<String> resultList = Lists.newArrayList();
+        List<String> list = Splitter.on(",\n").splitToList(columnDefine);
+        list.forEach(ele -> {
+            Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
+            if (matcher.find()) {
+                String columnName = matcher.group(1);
+                String fieldName = getFieldName(columnName, removePrefix);
+                String propertyType = obtainPropertyType(matcher.group(2));
+                String length = propertyType.equals("String") ? matcher.group(3) : "-1";
+                String comment = matcher.group(4);
+                String result = String.format(sqlTemplate, fieldName, comment, columnName, "", length, 1);
+                resultList.add(result);
+            }
+        });
+
+        return Joiner.on("\n").join(resultList);
     }
 
     /**
@@ -119,18 +148,18 @@ public class MyStringUtil {
      * @param columnDefine
      * @return
      */
-    public static String convertColumnToEntity(String columnDefine) {
+    public static String convertColumnToEntity(String columnDefine, String removePrefix) {
         if (StringUtils.isBlank(columnDefine)) {
             return "";
         }
         List<String> resultList = Lists.newArrayList();
         List<String> list = Splitter.on(",\n").splitToList(columnDefine);
-        Pattern compile = Pattern.compile("^\\s*`(.*)` ([a-zA-Z]*)(\\(.*\\))? .*'(.*)'$");
         list.forEach(ele -> {
-            Matcher matcher = compile.matcher(ele);
+            Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
             if (matcher.find()) {
+                String fieldName = getFieldName(matcher.group(1), removePrefix);
                 String result = String.format("    /**\n     * %s\n     */\n    private %s %s;\n",
-                        matcher.group(4), obtainPropertyType(matcher.group(2)), convertUnderlineToCamel(matcher.group(1)));
+                        matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
 //                String result = new StringBuilder()
 //                        .append("    /**")
 //                        .append("\n     * ")
@@ -188,5 +217,14 @@ public class MyStringUtil {
         }
 
         return result;
+    }
+
+    public static String getFieldName(String columnName, String removePrefix) {
+        String fieldName = convertUnderlineToCamel(columnName);
+        if (fieldName.substring(0, removePrefix.length()).equals(removePrefix)) {
+            fieldName = fieldName.substring(removePrefix.length());
+        }
+
+        return fieldName;
     }
 }
