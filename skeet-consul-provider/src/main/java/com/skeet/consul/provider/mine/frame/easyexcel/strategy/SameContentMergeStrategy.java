@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @Description
+ * @Description 相同列连续的相同内容合并为一个单元格
  * @Author chengsj
  * @Date 2021/1/8 11:04
  */
@@ -43,7 +43,7 @@ public class SameContentMergeStrategy extends AbstractMergeStrategy {
 
         int sameCount = this.getSameCount(sheet, cell, rowIndex, columnIndex);
 
-        if (sameCount <= 1) {
+        if (sameCount == 0) {
             return;
         }
 
@@ -54,6 +54,13 @@ public class SameContentMergeStrategy extends AbstractMergeStrategy {
         sheet.addMergedRegion(cellRangeAddress);
     }
 
+    /**
+     * 如果单元格为合并后的单元格，则将该单元格拆分成多个单个的单元格
+     *
+     * @param sheet       工作表
+     * @param rowIndex    行索引
+     * @param columnIndex 列索引
+     */
     private void removeMergedRegion(Sheet sheet, int rowIndex, Integer columnIndex) {
         List<CellRangeAddress> mergedRegions = sheet.getMergedRegions();
         for (int i = 0; i < mergedRegions.size(); i++) {
@@ -65,6 +72,15 @@ public class SameContentMergeStrategy extends AbstractMergeStrategy {
         }
     }
 
+    /**
+     * 获取相同内容的单元格数量（与同一列且在该当前单元格所在行之前的单元格作比较）
+     *
+     * @param sheet       工作表
+     * @param cell        单元格
+     * @param rowIndex    行索引
+     * @param columnIndex 列索引
+     * @return 相同内容的单元格数量
+     */
     private int getSameCount(Sheet sheet, Cell cell, int rowIndex, Integer columnIndex) {
         int sameCount = 0;
         int anotherRowIndex = rowIndex - 1;
