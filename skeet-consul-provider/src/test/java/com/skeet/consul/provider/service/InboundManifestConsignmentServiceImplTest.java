@@ -2,10 +2,10 @@ package com.skeet.consul.provider.service;
 
 import com.google.common.collect.Lists;
 import com.skeet.consul.provider.CommonAnnotationClass;
-import com.skeet.consul.provider.project.dispatch.model.domain.ICDTO;
-import com.skeet.consul.provider.project.dispatch.model.domain.InboundManifestMsgDTO;
-import com.skeet.consul.provider.project.dispatch.model.domain.ManifestOperationDTO;
-import com.skeet.consul.provider.project.dispatch.service.InboundManifestMsgService;
+import com.skeet.consul.provider.modules.project.dispatch.model.domain.ICDTO;
+import com.skeet.consul.provider.modules.project.dispatch.model.domain.InboundManifestMsgDTO;
+import com.skeet.consul.provider.modules.project.dispatch.model.domain.ManifestOperationDTO;
+import com.skeet.consul.provider.modules.project.dispatch.service.InboundManifestMsgService;
 import com.skeet.consul.provider.util.FileUtil;
 import com.skeet.consul.provider.util.JsonUtils;
 import com.skeet.consul.provider.util.LambdaKit;

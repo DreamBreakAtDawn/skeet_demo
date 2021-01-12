@@ -1,8 +1,8 @@
 package com.skeet.consul.provider.test.mybatis;
 
-import com.skeet.consul.provider.project.order.dao.mapper.InventorySnapshotMapper;
-import com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria;
-import com.skeet.consul.provider.project.order.model.export.InventoryChargeExportDTO;
+import com.skeet.consul.provider.modules.project.order.dao.mapper.InventorySnapshotMapper;
+import com.skeet.consul.provider.modules.project.order.model.domain.InventorySnapshotCriteria;
+import com.skeet.consul.provider.modules.project.order.model.export.InventoryChargeExportDTO;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;

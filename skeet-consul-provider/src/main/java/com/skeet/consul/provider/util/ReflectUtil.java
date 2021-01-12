@@ -2,7 +2,7 @@ package com.skeet.consul.provider.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.skeet.consul.provider.project.dispatch.model.domain.InboundManifestMsgDTO;
+import com.skeet.consul.provider.modules.project.dispatch.model.domain.InboundManifestMsgDTO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.reflection.MetaObject;
 

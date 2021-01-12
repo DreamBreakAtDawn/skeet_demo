@@ -2,8 +2,8 @@ package com.skeet.consul.provider.service;
 
 import com.google.common.collect.Lists;
 import com.skeet.consul.provider.ConsulProviderApplication;
-import com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria;
-import com.skeet.consul.provider.project.order.service.InventorySnapshotService;
+import com.skeet.consul.provider.modules.project.order.model.domain.InventorySnapshotCriteria;
+import com.skeet.consul.provider.modules.project.order.service.InventorySnapshotService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.FilterType;
 @SpringBootApplication(scanBasePackages = {"com.skeet.consul.provider"})
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.skeet.consul.provider.mine.*"))
 //@ComponentScan(basePackages = {"com.skeet.consul.provider"})
-//@MapperScan(basePackages = {"com.skeet.consul.provider.project.order.dao"})
+//@MapperScan(basePackages = {"com.skeet.consul.provider.modules.project.order.dao"})
 @Slf4j
 public class ConsulProviderApplication extends SpringBootServletInitializer {
 
