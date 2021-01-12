@@ -2,26 +2,37 @@ package com.skeet.consul.provider.mine.frame.easyexcel.strategy;
 
 import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.write.merge.AbstractMergeStrategy;
-import org.apache.poi.ss.format.CellFormat;
+import com.skeet.consul.provider.util.SheetUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellUtil;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * @Description 相同列连续的相同内容合并为一个单元格
+ * @Description 对齐指定列的单元格
  * @Author chengsj
  * @Date 2021/1/8 11:04
  */
-public class SameContentMergeStrategy extends AbstractMergeStrategy {
+public class AlignCellMergeStrategy extends AbstractMergeStrategy {
 
+    /**
+     * 要对齐的参考列
+     */
+    private Integer alignColumnIndex;
+
+    /**
+     * 对齐合并单元格的列
+     */
     private List<Integer> columnIndexes;
 
-    public SameContentMergeStrategy(Integer... columnIndexes) {
+    public AlignCellMergeStrategy(Integer alignColumnIndex, Integer... columnIndexes) {
+        if (alignColumnIndex < 0) {
+            throw new IllegalArgumentException("AlignColumnIndex must be greater than 0");
+        }
+
         for (Integer columnIndex : columnIndexes) {
             Objects.requireNonNull(columnIndex);
 
@@ -30,6 +41,7 @@ public class SameContentMergeStrategy extends AbstractMergeStrategy {
             }
         }
 
+        this.alignColumnIndex = alignColumnIndex;
         this.columnIndexes = Arrays.asList(columnIndexes);
     }
 
@@ -41,9 +53,9 @@ public class SameContentMergeStrategy extends AbstractMergeStrategy {
             return;
         }
 
-        int sameCount = this.getSameCount(sheet, cell, rowIndex, columnIndex);
+        int sameCount = this.getSameCount(sheet, rowIndex);
 
-        if (sameCount == 0) {
+        if (sameCount <= 0) {
             return;
         }
 
@@ -73,31 +85,18 @@ public class SameContentMergeStrategy extends AbstractMergeStrategy {
     }
 
     /**
-     * 获取相同内容的单元格数量（与同一列且在该当前单元格所在行之前的单元格作比较）
+     * 获取相同内容的单元格数量（拿作比较的列的单元格的行首与当前行作比较）
      *
      * @param sheet       工作表
-     * @param cell        单元格
      * @param rowIndex    行索引
-     * @param columnIndex 列索引
      * @return 相同内容的单元格数量
      */
-    private int getSameCount(Sheet sheet, Cell cell, int rowIndex, Integer columnIndex) {
-        int sameCount = 0;
-        int anotherRowIndex = rowIndex - 1;
-
-        String thisValue = CellFormat.getInstance("General").apply(cell).text;
-
-        while (anotherRowIndex >= 0) {
-
-            Cell anotherCell = CellUtil.getCell(sheet.getRow(anotherRowIndex--), columnIndex);
-            String anotherValue = CellFormat.getInstance("General").apply(anotherCell).text;
-            if (!Objects.equals(thisValue, anotherValue)) {
-                break;
-            }
-
-            sameCount++;
+    private int getSameCount(Sheet sheet, int rowIndex) {
+        CellRangeAddress cellRangeAddress = SheetUtil.getCellRangeAddress(sheet, rowIndex, alignColumnIndex);
+        if (Objects.isNull(cellRangeAddress)) {
+            return 0;
         }
 
-        return sameCount;
+        return rowIndex - cellRangeAddress.getFirstRow();
     }
 }
