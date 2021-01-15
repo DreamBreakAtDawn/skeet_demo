@@ -16,6 +16,7 @@
 *.iml
 *.ipr
 *.eml
+*.class
 
 ### NetBeans ###
 /nbproject/private/
@@ -30,7 +31,3 @@ LOG_PATH_IS_UNDEFINED
 app_box_log*
 
 *.log
-/app-box-base/target/classes/META-INF/
-/app-box-base/target/
-/app-box-api/target/classes/
-/app-box-api/target/
