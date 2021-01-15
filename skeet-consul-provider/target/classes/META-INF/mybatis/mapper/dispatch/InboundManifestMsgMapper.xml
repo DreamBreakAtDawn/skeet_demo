@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.skeet.consul.provider.project.dispatch.dao.mapper.InboundManifestMsgMapper">
+<mapper namespace="com.skeet.consul.provider.modules.project.dispatch.dao.mapper.InboundManifestMsgMapper">
 
     <select id="queryNoneConsignmentMappingData"
-            resultType="com.skeet.consul.provider.project.dispatch.model.domain.InboundManifestMsgDTO">
+            resultType="com.skeet.consul.provider.modules.project.dispatch.model.domain.InboundManifestMsgDTO">
         SELECT
         ims.manifest_id,
         ims.operation_node,

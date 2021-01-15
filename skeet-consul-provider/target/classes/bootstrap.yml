@@ -9,3 +9,13 @@ spring:
     consul:
       host: 127.0.0.1
       port: 8500
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 80
+        max-wait: 2000s
+        max-idle: 30
+        min-idle: 10

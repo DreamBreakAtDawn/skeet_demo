@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.skeet.consul.provider.project.order.dao.mapper.InventorySnapshotMapper">
+<mapper namespace="com.skeet.consul.provider.modules.project.order.dao.mapper.InventorySnapshotMapper">
 
     <insert id="insertInventorySnapshot"
-            parameterType="com.skeet.consul.provider.project.order.model.domain.InventoryCommonCriteria">
+            parameterType="com.skeet.consul.provider.modules.project.order.model.domain.InventoryCommonCriteria">
         INSERT INTO inventory_snapshot(
         `customer_id`,
         `customer_code`,
@@ -74,7 +74,7 @@
     </select>
 
     <insert id="insertInventorySnapshotList"
-            parameterType="com.skeet.consul.provider.project.order.model.entity.InventorySnapshot">
+            parameterType="com.skeet.consul.provider.modules.project.order.model.entity.InventorySnapshot">
         INSERT INTO inventory_snapshot(
         `customer_id`,
         `customer_code`,
@@ -116,8 +116,8 @@
     </insert>
 
     <select id="selectChargeData"
-            parameterType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria"
-            resultType="com.skeet.consul.provider.project.order.model.export.InventoryChargeExportDTO">
+            parameterType="com.skeet.consul.provider.modules.project.order.model.domain.InventorySnapshotCriteria"
+            resultType="com.skeet.consul.provider.modules.project.order.model.export.InventoryChargeExportDTO">
         SELECT
         CONCAT_WS(
         '-',
@@ -312,8 +312,8 @@
     </sql>
 
 
-    <select id="selectBy" parameterType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotCriteria"
-            resultType="com.skeet.consul.provider.project.order.model.domain.InventorySnapshotDTO">
+    <select id="selectBy" parameterType="com.skeet.consul.provider.modules.project.order.model.domain.InventorySnapshotCriteria"
+            resultType="com.skeet.consul.provider.modules.project.order.model.domain.InventorySnapshotDTO">
         select *
         from inventory_snapshot ivs
         <where>
