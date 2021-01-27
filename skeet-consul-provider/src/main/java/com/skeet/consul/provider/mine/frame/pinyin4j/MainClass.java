@@ -41,7 +41,7 @@ public class MainClass {
                 Person.builder().name("b成卓杰").build(),
                 Person.builder().name("1成斯敏").build(),
                 Person.builder().name("a成卓圳").build(),
-                Person.builder().name("成卓钊").build(),
+                Person.builder().name("**成卓钊").build(),
                 Person.builder().name("成斯涵").build());
         list.sort(Comparator.comparing(Person::getName, new PinyinComparator()));
         list.forEach(System.out::println);
