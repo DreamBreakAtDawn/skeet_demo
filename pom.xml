@@ -7,6 +7,7 @@
         <module>skeet-consul-provider</module>
         <module>skeet-common-api</module>
         <module>skeet-consul-config</module>
+        <module>skeet-mybatis-plus</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

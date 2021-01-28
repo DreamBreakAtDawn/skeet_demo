@@ -27,18 +27,79 @@ public class MyStringUtil {
 //        String s = buildQueryIn(Lists.newArrayList("123", "456"));
 //        System.out.println(s);
 
-        String columnDefine = " `Flimit_multiple` varchar(50) DEFAULT NULL COMMENT '边际倍数',\n" +
-                "  `Fall_multiple` varchar(50) DEFAULT NULL COMMENT '全场倍数',\n" +
-                "  `Flimit_rate` varchar(64) DEFAULT NULL COMMENT '边际利率（%/年）',\n" +
-                "  `Fweighting_rate` varchar(50) DEFAULT NULL COMMENT '加权利率（%/年）',\n" +
-                "  `Flimit_price` varchar(50) DEFAULT NULL COMMENT '边际价格（元）',\n" +
-                "  `Fweighting_price` varchar(50) DEFAULT NULL COMMENT '加权价格（元）',\n" +
-                "  `Fsmall_range` varchar(50) DEFAULT NULL COMMENT '小区间范围（每一轮最新指导区间）',\n" +
-                "  `Fsmall_range_lower_Side` varchar(50) DEFAULT NULL COMMENT '指导区间下限',\n" +
-                "  `Fsmall_range_upper_Side` varchar(50) DEFAULT NULL COMMENT '指导区间上限',\n" +
-                "  `Foperator` varchar(50) DEFAULT NULL COMMENT '操作人'";
+        String columnDefine = "  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',\n" +
+                "  `open_id` char(63) DEFAULT NULL COMMENT '债销人 - 企点openid',\n" +
+                "  `real_name` varchar(127) DEFAULT NULL COMMENT '债销人 - 企点号姓名',\n" +
+                "  `org_id` char(63) DEFAULT NULL COMMENT '债销人 - 机构id',\n" +
+                "  `org_name` varchar(127) NOT NULL COMMENT '债销人 - 机构名称',\n" +
+                "  `bond_class` tinyint(4) DEFAULT NULL COMMENT '债券大类型：1：利率债   2：信用债 ',\n" +
+                "  `opp_open_id` char(63) DEFAULT NULL COMMENT '交易对手 - 企点openid',\n" +
+                "  `opp_org_id` char(63) DEFAULT NULL COMMENT '交易对手 - 机构id',\n" +
+                "  `opp_org_name` varchar(127) DEFAULT NULL COMMENT '交易对手 - 机构名称',\n" +
+                "  `opp_display_name` varchar(127) DEFAULT NULL COMMENT '交易对手 - 显示名称',\n" +
+                "  `opp_remark` varchar(255) DEFAULT NULL COMMENT '交易对手 - 备注',\n" +
+                "  `bond_id` bigint(20) DEFAULT NULL COMMENT '债券ID',\n" +
+                "  `rate` decimal(10,4) DEFAULT NULL COMMENT '标位（%）',\n" +
+                "  `rate_margin` decimal(10,4) DEFAULT NULL COMMENT '利差（%）',\n" +
+                "  `price` decimal(16,4) DEFAULT NULL COMMENT '价格',\n" +
+                "  `vol` decimal(10,2) DEFAULT NULL COMMENT '面值（亿）',\n" +
+                "  `actual_rate` decimal(10,4) DEFAULT NULL COMMENT '实际中标利率（%）',\n" +
+                "  `actual_price` decimal(16,4) DEFAULT NULL COMMENT '实际中标价格',\n" +
+                "  `actual_vol` decimal(10,2) DEFAULT NULL COMMENT '实际分配面值（亿）',\n" +
+                "  `not_over_vol` decimal(10,2) DEFAULT NULL COMMENT '不超过百分比（%），预留字段',\n" +
+                "  `delivery_method` tinyint(4) DEFAULT NULL COMMENT '交割方式',\n" +
+                "  `remark` varchar(100) DEFAULT NULL COMMENT '备注',\n" +
+                "  `creator` char(63) DEFAULT NULL COMMENT '创建人open_id',\n" +
+                "  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
+                "  `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',\n" +
+                "  `is_deleted` tinyint(4) NOT NULL COMMENT '逻辑删除：0-未删除，1-已删除'";
 //        System.out.println(convertColumnToEntity(columnDefine, "F"));
-        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
+        System.out.println(convertColumnToEntityWithColumnAnnotation(columnDefine, "F"));
+//        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
+    }
+
+    private static String convertColumnToEntityWithColumnAnnotation(String columnDefine, String removePrefix) {
+        if (StringUtils.isBlank(columnDefine)) {
+            return "";
+        }
+        List<String> resultList = Lists.newArrayList();
+        List<String> list = Splitter.on(",\n").splitToList(columnDefine);
+        list.forEach(ele -> {
+            Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
+            if (matcher.find()) {
+                String fieldName = getFieldName(matcher.group(1), removePrefix);
+                String result = String.format("    /**\n     * %s\n     */\n    @Column(name = \"%s\")\n    private %s %s;\n",
+                        matcher.group(4), matcher.group(1), obtainPropertyType(matcher.group(2)), fieldName);
+                resultList.add(result);
+            }
+        });
+
+        return Joiner.on("\n").join(resultList);
+    }
+
+    /**
+     * 将表定义语句的字段转化成javabean的属性
+     *
+     * @param columnDefine
+     * @return
+     */
+    public static String convertColumnToEntity(String columnDefine, String removePrefix) {
+        if (StringUtils.isBlank(columnDefine)) {
+            return "";
+        }
+        List<String> resultList = Lists.newArrayList();
+        List<String> list = Splitter.on(",\n").splitToList(columnDefine);
+        list.forEach(ele -> {
+            Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
+            if (matcher.find()) {
+                String fieldName = getFieldName(matcher.group(1), removePrefix);
+                String result = String.format("    /**\n     * %s\n     */\n    private %s %s;\n",
+                        matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
+                resultList.add(result);
+            }
+        });
+
+        return Joiner.on("\n").join(resultList);
     }
 
     private static String getInsertSqlForBondHeaderDictionary(String columnDefine, String removePrefix) {
@@ -142,43 +203,6 @@ public class MyStringUtil {
         return i.substring(0, 1).toUpperCase() + i.substring(1);
     }
 
-    /**
-     * 将表定义语句的字段转化成javabean的属性
-     *
-     * @param columnDefine
-     * @return
-     */
-    public static String convertColumnToEntity(String columnDefine, String removePrefix) {
-        if (StringUtils.isBlank(columnDefine)) {
-            return "";
-        }
-        List<String> resultList = Lists.newArrayList();
-        List<String> list = Splitter.on(",\n").splitToList(columnDefine);
-        list.forEach(ele -> {
-            Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
-            if (matcher.find()) {
-                String fieldName = getFieldName(matcher.group(1), removePrefix);
-                String result = String.format("    /**\n     * %s\n     */\n    private %s %s;\n",
-                        matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
-//                String result = new StringBuilder()
-//                        .append("    /**")
-//                        .append("\n     * ")
-//                        .append(matcher.group(4))
-//                        .append("\n     */")
-//                        .append("\n    private")
-//                        .append(" ")
-//                        .append(obtainPropertyType(matcher.group(2)))
-//                        .append(" ")
-//                        .append(convertUnderlineToCamel(matcher.group(1)))
-//                        .append(";\n")
-//                        .toString();
-                resultList.add(result);
-            }
-        });
-
-        return Joiner.on("\n").join(resultList);
-    }
-
     private static String convertColumnToMybatisResultMap(String columnDefine) {
         if (StringUtils.isBlank(columnDefine)) {
             return "";
@@ -205,8 +229,14 @@ public class MyStringUtil {
             case "datetime":
                 result = "Date";
                 break;
+            case "tinyint":
+            case "smallint":
+            case "mediumint":
             case "int":
                 result = "Integer";
+                break;
+            case "bigint":
+                result = "Long";
                 break;
             case "decimal":
                 result = "BigDecimal";
