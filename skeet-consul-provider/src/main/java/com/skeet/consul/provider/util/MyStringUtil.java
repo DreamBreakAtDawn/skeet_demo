@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,28 +54,22 @@ public class MyStringUtil {
                 "  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
                 "  `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',\n" +
                 "  `is_deleted` tinyint(4) NOT NULL COMMENT '逻辑删除：0-未删除，1-已删除'";
-//        System.out.println(convertColumnToEntity(columnDefine, "F"));
-        System.out.println(convertColumnToEntityWithColumnAnnotation(columnDefine, "F"));
+        System.out.println(convertColumnToEntity(columnDefine, "F"));
+//        System.out.println(convertColumnToEntityWithColumnAnnotation(columnDefine, "F"));
 //        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
+//        System.out.println(getAllColumn(columnDefine));
+    }
+
+    private static String getAllColumn(String columnDefine) {
+        return doLogic(columnDefine, ",", matcher -> matcher.group(1));
     }
 
     private static String convertColumnToEntityWithColumnAnnotation(String columnDefine, String removePrefix) {
-        if (StringUtils.isBlank(columnDefine)) {
-            return "";
-        }
-        List<String> resultList = Lists.newArrayList();
-        List<String> list = Splitter.on(",\n").splitToList(columnDefine);
-        list.forEach(ele -> {
-            Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
-            if (matcher.find()) {
-                String fieldName = getFieldName(matcher.group(1), removePrefix);
-                String result = String.format("    /**\n     * %s\n     */\n    @Column(name = \"%s\")\n    private %s %s;\n",
-                        matcher.group(4), matcher.group(1), obtainPropertyType(matcher.group(2)), fieldName);
-                resultList.add(result);
-            }
+        return doLogic(columnDefine, "\n", matcher -> {
+            String fieldName = getFieldName(matcher.group(1), removePrefix);
+            return String.format("    /**\n     * %s\n     */\n    @Column(name = \"%s\")\n    private %s %s;\n",
+                    matcher.group(4), matcher.group(1), obtainPropertyType(matcher.group(2)), fieldName);
         });
-
-        return Joiner.on("\n").join(resultList);
     }
 
     /**
@@ -84,6 +79,15 @@ public class MyStringUtil {
      * @return
      */
     public static String convertColumnToEntity(String columnDefine, String removePrefix) {
+        return doLogic(columnDefine, "\n", matcher -> {
+
+            String fieldName = getFieldName(matcher.group(1), removePrefix);
+            return String.format("    /**\n     * %s\n     */\n    private %s %s;\n",
+                    matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
+        });
+    }
+
+    private static String doLogic(String columnDefine, String joinSymbol, Function<Matcher, String> function) {
         if (StringUtils.isBlank(columnDefine)) {
             return "";
         }
@@ -92,14 +96,12 @@ public class MyStringUtil {
         list.forEach(ele -> {
             Matcher matcher = COLUMN_DEFINE_PATTERN.matcher(ele);
             if (matcher.find()) {
-                String fieldName = getFieldName(matcher.group(1), removePrefix);
-                String result = String.format("    /**\n     * %s\n     */\n    private %s %s;\n",
-                        matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
+                String result = function.apply(matcher);
                 resultList.add(result);
             }
         });
 
-        return Joiner.on("\n").join(resultList);
+        return Joiner.on(joinSymbol).join(resultList);
     }
 
     private static String getInsertSqlForBondHeaderDictionary(String columnDefine, String removePrefix) {
