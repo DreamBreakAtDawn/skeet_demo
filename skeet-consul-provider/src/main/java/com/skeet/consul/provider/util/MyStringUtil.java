@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -48,16 +49,39 @@ public class MyStringUtil {
                 "  `actual_price` decimal(16,4) DEFAULT NULL COMMENT '实际中标价格',\n" +
                 "  `actual_vol` decimal(10,2) DEFAULT NULL COMMENT '实际分配面值（亿）',\n" +
                 "  `not_over_vol` decimal(10,2) DEFAULT NULL COMMENT '不超过百分比（%），预留字段',\n" +
-                "  `delivery_method` tinyint(4) DEFAULT NULL COMMENT '交割方式',\n" +
-                "  `remark` varchar(100) DEFAULT NULL COMMENT '备注',\n" +
-                "  `creator` char(63) DEFAULT NULL COMMENT '创建人open_id',\n" +
-                "  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
-                "  `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',\n" +
-                "  `is_deleted` tinyint(4) NOT NULL COMMENT '逻辑删除：0-未删除，1-已删除'";
-        System.out.println(convertColumnToEntity(columnDefine, "F"));
+                "  `delivery_method` tinyint(4) DEFAULT NULL COMMENT '交割方式'";
+//        System.out.println(convertColumnToEntity(columnDefine, "F"));
 //        System.out.println(convertColumnToEntityWithColumnAnnotation(columnDefine, "F"));
 //        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
 //        System.out.println(getAllColumn(columnDefine));
+//        System.out.println(genResultMap(columnDefine));
+        System.out.println(genApiModelProperty(columnDefine, "F"));
+    }
+
+    private static String genApiModelProperty(String columnDefine, String removePrefix) {
+        String template = "    @ApiModelProperty(value = \"%s\")\n    private %s %s;\n";
+        return doLogic(columnDefine, "\n", matcher -> {
+            String column = matcher.group(1);
+            String type = matcher.group(2);
+            String desc = matcher.group(4);
+            return String.format(template,
+                    desc,
+                    obtainPropertyType(type),
+                    getFieldName(column, removePrefix));
+        });
+    }
+
+    private static String genResultMap(String columnDefine) {
+        String template = "<%s column=\"%s\" jdbcType=\"%s\" property=\"%s\" />";
+        return doLogic(columnDefine, "\n", matcher -> {
+            String column = matcher.group(1);
+            String type = matcher.group(2);
+            return String.format(template,
+                    Arrays.asList("id", "Fid").contains(column) ? "id" : "result",
+                    column,
+                    type.toUpperCase(),
+                    convertUnderlineToCamel(column));
+        });
     }
 
     private static String getAllColumn(String columnDefine) {
@@ -65,9 +89,10 @@ public class MyStringUtil {
     }
 
     private static String convertColumnToEntityWithColumnAnnotation(String columnDefine, String removePrefix) {
+        String template = "    /**\n     * %s\n     */\n    @Column(name = \"%s\")\n    private %s %s;\n";
         return doLogic(columnDefine, "\n", matcher -> {
             String fieldName = getFieldName(matcher.group(1), removePrefix);
-            return String.format("    /**\n     * %s\n     */\n    @Column(name = \"%s\")\n    private %s %s;\n",
+            return String.format(template,
                     matcher.group(4), matcher.group(1), obtainPropertyType(matcher.group(2)), fieldName);
         });
     }
@@ -79,10 +104,10 @@ public class MyStringUtil {
      * @return
      */
     public static String convertColumnToEntity(String columnDefine, String removePrefix) {
+        String template = "    /**\n     * %s\n     */\n    private %s %s;\n";
         return doLogic(columnDefine, "\n", matcher -> {
-
             String fieldName = getFieldName(matcher.group(1), removePrefix);
-            return String.format("    /**\n     * %s\n     */\n    private %s %s;\n",
+            return String.format(template,
                     matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
         });
     }
