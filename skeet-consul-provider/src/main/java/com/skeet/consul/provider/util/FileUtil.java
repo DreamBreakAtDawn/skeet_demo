@@ -69,7 +69,7 @@ public class FileUtil {
      */
     public static List<String> loadFileListWithLinefeed(String filePath) {
         String str = FileUtil.loadFileString(filePath);
-        return MyStringUtil.split(str, "\r\n");
+        return SkeetStringUtil.split(str, "\r\n");
     }
 
     /**

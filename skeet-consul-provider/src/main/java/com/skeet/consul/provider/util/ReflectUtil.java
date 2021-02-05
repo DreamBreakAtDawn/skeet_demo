@@ -50,7 +50,7 @@ public class ReflectUtil {
                     continue;
                 }
 
-                builder.append(prefix).append(dot).append(MyStringUtil.convertCamelToUnderline(fieldName)).append(",");
+                builder.append(prefix).append(dot).append(SkeetStringUtil.convertCamelToUnderline(fieldName)).append(",");
             }
         } catch (Exception e) {
             e.printStackTrace();
