@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class MySqlStringUtil {
 
     /** 1-字段名称，2-字段类型，3-字段长度，4-字段描述 */
-    private static final Pattern COLUMN_DEFINE_PATTERN = Pattern.compile("^\\s*`(.*)` ([a-zA-Z]*)(\\(.*\\))? .*'(.*)'$");
+    private static final Pattern COLUMN_DEFINE_PATTERN = Pattern.compile("^\\s*(`(.*)` ([a-zA-Z]*)(\\(.*\\))? .*'(.*)')$");
 
     public static void main(String[] args) {
 //        String s = buildQueryIn(Lists.newArrayList("123", "456"));
@@ -49,19 +49,31 @@ public class MySqlStringUtil {
                 "  `delivery_method` tinyint(4) DEFAULT NULL COMMENT '交割方式'";
 //        System.out.println(convertColumnToEntity(columnDefine, "F"));
 //        System.out.println(convertColumnToEntityWithColumnAnnotation(columnDefine, "F"));
-//        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
+        System.out.println(getInsertSqlForBondHeaderDictionary(columnDefine, "F"));
 //        System.out.println(getAllColumn(columnDefine));
 //        System.out.println(genResultMap(columnDefine));
 //        System.out.println(genApiModelProperty(columnDefine, "F"));
-        System.out.println(genInsertContentList(columnDefine));
+//        System.out.println(genInsertContentList(columnDefine));
+//        test(columnDefine);
+    }
+
+    private static String test(String columnDefine) {
+        return doLogic(columnDefine, "\n", matcher -> {
+            System.out.println(matcher.group(1));
+            System.out.println(matcher.group(2));
+            System.out.println(matcher.group(3));
+            System.out.println(matcher.group(4));
+            System.out.println(matcher.group(5));
+            return "";
+        });
     }
 
     private static String genApiModelProperty(String columnDefine, String removePrefix) {
         String template = "    @ApiModelProperty(value = \"%s\")\n    private %s %s;\n";
         return doLogic(columnDefine, "\n", matcher -> {
-            String column = matcher.group(1);
-            String type = matcher.group(2);
-            String desc = matcher.group(4);
+            String column = matcher.group(2);
+            String type = matcher.group(3);
+            String desc = matcher.group(5);
             return String.format(template,
                     desc,
                     obtainPropertyType(type),
@@ -72,8 +84,8 @@ public class MySqlStringUtil {
     private static String genResultMap(String columnDefine) {
         String template = "<%s column=\"%s\" jdbcType=\"%s\" property=\"%s\" />";
         return doLogic(columnDefine, "\n", matcher -> {
-            String column = matcher.group(1);
-            String type = matcher.group(2);
+            String column = matcher.group(2);
+            String type = matcher.group(3);
             return String.format(template,
                     Arrays.asList("id", "Fid").contains(column) ? "id" : "result",
                     column,
@@ -83,15 +95,15 @@ public class MySqlStringUtil {
     }
 
     private static String getAllColumn(String columnDefine) {
-        return doLogic(columnDefine, ",", matcher -> matcher.group(1));
+        return doLogic(columnDefine, ",", matcher -> matcher.group(2));
     }
 
     private static String convertColumnToEntityWithColumnAnnotation(String columnDefine, String removePrefix) {
         String template = "    /**\n     * %s\n     */\n    @Column(name = \"%s\")\n    private %s %s;\n";
         return doLogic(columnDefine, "\n", matcher -> {
-            String fieldName = getFieldName(matcher.group(1), removePrefix);
+            String fieldName = getFieldName(matcher.group(2), removePrefix);
             return String.format(template,
-                    matcher.group(4), matcher.group(1), obtainPropertyType(matcher.group(2)), fieldName);
+                    matcher.group(5), matcher.group(2), obtainPropertyType(matcher.group(3)), fieldName);
         });
     }
 
@@ -104,17 +116,17 @@ public class MySqlStringUtil {
     public static String convertColumnToEntity(String columnDefine, String removePrefix) {
         String template = "    /**\n     * %s\n     */\n    private %s %s;\n";
         return doLogic(columnDefine, "\n", matcher -> {
-            String fieldName = getFieldName(matcher.group(1), removePrefix);
+            String fieldName = getFieldName(matcher.group(2), removePrefix);
             return String.format(template,
-                    matcher.group(4), obtainPropertyType(matcher.group(2)), fieldName);
+                    matcher.group(5), obtainPropertyType(matcher.group(3)), fieldName);
         });
     }
 
     private static String genInsertContentList(String columnDefine) {
         String template = "#{item.%s,jdbcType=%s}";
         return doLogic(columnDefine, ",", matcher -> {
-            String column = matcher.group(1);
-            String type = matcher.group(2);
+            String column = matcher.group(2);
+            String type = matcher.group(3);
             return String.format(template,
                     SkeetStringUtil.convertUnderlineToCamel(column),
                     type.toUpperCase());
@@ -127,20 +139,25 @@ public class MySqlStringUtil {
                 "`Fheader_name`, `Fchinese_header_name`, `Fcolumn_name`, `Fcolumn_source`, `column_limit`, `Fdata_status`) " +
                 "VALUES ('%s', '%s', '%s', '%s', %s, %s);";
         return doLogic(columnDefine, "\n", matcher -> {
-            String columnName = matcher.group(1);
+            String columnName = matcher.group(2);
             String fieldName = getFieldName(columnName, removePrefix);
-            String propertyType = obtainPropertyType(matcher.group(2));
-            String length = propertyType.equals("String") ? matcher.group(3) : "-1";
-            String comment = matcher.group(4);
+            String length = getLength(matcher);
+            String comment = matcher.group(5);
             return String.format(template, fieldName, comment, columnName, "", length, 1);
         });
+    }
+
+    private static String getLength(Matcher matcher) {
+        String propertyType = obtainPropertyType(matcher.group(3));
+        String lengthWrap = matcher.group(4);
+        return propertyType.equals("String") ? lengthWrap.substring(1, lengthWrap.length() - 1) : "-1";
     }
 
     private static String convertColumnToMybatisResultMap(String columnDefine) {
         String template = "<result column=\"%s\" property=\"%s\"/>";
         return doLogic(columnDefine, "\n", matcher -> {
-            String columnName = matcher.group(1);
-            String propertyName = SkeetStringUtil.convertUnderlineToCamel(matcher.group(1));
+            String columnName = matcher.group(2);
+            String propertyName = SkeetStringUtil.convertUnderlineToCamel(matcher.group(2));
             return String.format(template, columnName, propertyName);
         });
     }
