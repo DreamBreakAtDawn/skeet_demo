@@ -8,6 +8,8 @@
         <module>skeet-common-api</module>
         <module>skeet-consul-config</module>
         <module>skeet-mybatis-plus</module>
+        <module>skeet-seata</module>
+        <module>skeet-tk-mybatis</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

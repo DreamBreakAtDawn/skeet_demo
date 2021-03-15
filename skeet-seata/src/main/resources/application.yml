@@ -1,0 +1,10 @@
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 212.129.164.73:8848
+      group : "SEATA_GROUP"
+      namespace: ""
+      username: "nacos"
+      password: "nacos"
