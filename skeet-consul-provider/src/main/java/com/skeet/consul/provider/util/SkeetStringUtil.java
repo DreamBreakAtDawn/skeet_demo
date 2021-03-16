@@ -212,6 +212,7 @@ public class SkeetStringUtil {
         map.put("`Fpay_start_date` varchar(20) DEFAULT NULL COMMENT '缴款起始日'", "t_primary_bond_info");//
         map.put("`Fpay_end_date` varchar(20) DEFAULT NULL COMMENT '缴款到期日'", "t_primary_bond_info");//
 
+        map.put("`Fissuer` varchar(200) DEFAULT NULL COMMENT '机构全称'", "t_primary_issuer_info");
         map.put("`Fbasic_situation` varchar(500) DEFAULT NULL COMMENT '基本情况'", "t_primary_issuer_info");
 
         map.put("`Frating_agency` varchar(100) DEFAULT NULL COMMENT '评级机构'", "t_primary_rating_info");

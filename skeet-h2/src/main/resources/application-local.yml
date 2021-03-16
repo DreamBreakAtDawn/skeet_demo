@@ -1,0 +1,12 @@
+skeet:
+  datasource:
+    username: root
+    password: NaqcChx3EpCX
+    jdbc-url: jdbc:mysql://212.129.164.73:3306/qtrade_ai?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    pool-name: primary.datasource
+    minimum-idle: 5
+    maximum-pool-size: 30
+    idle-timeout: 30000
+    max-lifetime: 1800000
+    connection-timeout: 30000
+    connection-test-query: SELECT 1

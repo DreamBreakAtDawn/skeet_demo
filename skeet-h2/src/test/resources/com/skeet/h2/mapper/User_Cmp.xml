@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dataset>
+    <ums_user
+            tid="1"
+            username="admin"
+            password="a9591dc4bbcd917ed4c2f1068bbde21db51b3c3c"
+            email=""/>
+    <ums_user
+            tid="20"
+            username="talon1"
+            password="dead"
+            email="1"/>
+    <ums_user
+            tid="21"
+            username="zed"
+            password="shadow"
+            email="1"/>
+</dataset>

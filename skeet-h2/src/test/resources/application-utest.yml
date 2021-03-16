@@ -1,0 +1,6 @@
+skeet:
+  datasource:
+    driver-class-name: org.h2.Driver
+    jdbc-url: jdbc:h2:mem:qtrade_ai
+    username:
+    password:
