@@ -21,8 +21,94 @@ import java.util.Objects;
 public class SkeetStringUtil {
 
     public static void main(String[] args) {
-        genGetMethodForPrimaryBond();
-        genSetMethodForPrimaryBond();
+//        genGetMethodForPrimaryBond();
+//        genSetMethodForPrimaryBond();
+        genUpdateSqlForDictionaryLimit();
+    }
+
+    private static void genUpdateSqlForDictionaryLimit() {
+        String sqlTemplate = "UPDATE `db_primary_bond_sale`.`t_org_ad_bond_header_data_dictionary` SET Fcolumn_limit = %s WHERE Fheader_name = '%s';";
+        Map<String, Integer> map = buiDictionaryMap();
+        map.forEach((k, v) -> System.out.println(String.format(sqlTemplate, v, k)));
+    }
+
+    private static Map<String, Integer> buiDictionaryMap() {
+        Map<String, Integer> map = Maps.newHashMap();
+        map.put("bondCode", 20);
+        map.put("bondSimpleName", 50);
+        map.put("bondFullName", 100);
+        map.put("issueAmount", 50);
+        map.put("deadline", 50);
+        map.put("bondType", 50);
+        map.put("prdctnRange", 50);
+        map.put("tenderStartDate", 50);
+        map.put("realInterceptTime", 50);
+        map.put("firstPubDataDate", 50);
+        map.put("issueDate", 50);
+        map.put("issueStartDate", 20);
+        map.put("issueEndDate", 20);
+        map.put("riseDate", 50);
+        map.put("payDate", 50);
+        map.put("payStartDate", 20);
+        map.put("payEndDate", 20);
+        map.put("ipoDate", 50);
+        map.put("expireDate", 50);
+        map.put("leadUnderwriter", 200);
+        map.put("jointLeadUnderwriter", 200);
+        map.put("underwritingSyndicate", 200);
+        map.put("bookkeeper", 200);
+        map.put("underwriteWay", 20);
+        map.put("leadUnderwriterContact", 50);
+        map.put("bookkeeperContact", 50);
+        map.put("issuers", 200);
+        map.put("compProperty", 50);
+        map.put("area", 50);
+        map.put("isListed", 50);
+        map.put("regiterAmount", 50);
+        map.put("assetSize", 50);
+        map.put("debtRatio", 50);
+        map.put("basicSituation", 500);
+        map.put("rating", 64);
+        map.put("bondRating", 50);
+        map.put("issuerRating", 50);
+        map.put("ratingAgency", 100);
+        map.put("pubWay", 50);
+        map.put("exchMarket", 100);
+        map.put("isAddPub", 50);
+        map.put("isSpanMarket", 20);
+        map.put("isAdditional", 50);
+        map.put("isCityInvestment", 20);
+        map.put("isRight", 20);
+        map.put("useOfFunds", 500);
+        map.put("specialItem", 5000);
+        map.put("pubHistory", 5000);
+        map.put("rateType", 50);
+        map.put("benchmarkRate", 20);
+        map.put("intPayment", 50);
+        map.put("interestFrequency", 20);
+        map.put("repaymentWay", 20);
+        map.put("tenderType", 30);
+        map.put("bidTargetType", 50);
+        map.put("isCompetitiveSale", 50);
+        map.put("enhcMethod", 50);
+        map.put("guarantor", 50);
+        map.put("guaranteeSituation", 500);
+        map.put("enhc", 500);
+        map.put("pubRate", 64);
+        map.put("issueCommissionRate", 50);
+        map.put("rebate", 50);
+        map.put("brokerage", 50);
+        map.put("smallRange", 50);
+        map.put("allMultiple", 10);
+        map.put("limitMultiple", 10);
+        map.put("limitRate", 10);
+        map.put("weightingRate", 10);
+        map.put("orgBranch", 50);
+        map.put("orgRole", 50);
+        map.put("selfBondSummaryContact", 50);
+        map.put("selfBondSaleContact", 50);
+        map.put("remark", 500);
+        return map;
     }
 
     private static void genSetMethodForPrimaryBond() {
@@ -30,7 +116,7 @@ public class SkeetStringUtil {
                 "\t\tgenGuideInfo();\n" +
                 "\t\tthis.guideInfo.set%s(%s);\n" +
                 "\t}\n";
-        Map<String , String> contentMap = Maps.newHashMap();
+        Map<String, String> contentMap = Maps.newHashMap();
         contentMap.put("limitRate", "limitRate.toPlainString()");
         contentMap.put("limitPrice", "limitPrice.toPlainString()");
         contentMap.put("limitRateMargin", "limitRateMargin.toPlainString()");
@@ -53,7 +139,7 @@ public class SkeetStringUtil {
         String template = "\tpublic BigDecimal get%s() {\n" +
                 "\t\treturn Objects.nonNull(guideInfo) ? %s : null;\n" +
                 "\t}\n";
-        Map<String , String> contentMap = Maps.newHashMap();
+        Map<String, String> contentMap = Maps.newHashMap();
         contentMap.put("limitRate", "Convert.toBigDecimal(guideInfo.getLimitRate())");
         contentMap.put("limitPrice", "Convert.toBigDecimal(guideInfo.getLimitPrice())");
         contentMap.put("limitRateMargin", "Convert.toBigDecimal(guideInfo.getLimitRateMargin())");
