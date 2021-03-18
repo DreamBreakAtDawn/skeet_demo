@@ -23,7 +23,7 @@ public class SkeetStringUtil {
     public static void main(String[] args) {
 //        genGetMethodForPrimaryBond();
 //        genSetMethodForPrimaryBond();
-//        genUpdateSqlForDictionaryLimit();
+        genUpdateSqlForDictionaryLimit();
         genAlterTableSqlForBond();
     }
 
@@ -147,7 +147,7 @@ public class SkeetStringUtil {
         map.put("rating", 64);
         map.put("bondRating", 50);
         map.put("issuerRating", 50);
-        map.put("ratingAgency", 100);
+        map.put("ratingAgency", 200);
         map.put("pubWay", 50);
         map.put("exchMarket", 100);
         map.put("isAddPub", 50);
@@ -215,10 +215,12 @@ public class SkeetStringUtil {
         map.put("`Fissuer` varchar(200) DEFAULT NULL COMMENT '机构全称'", "t_primary_issuer_info");
         map.put("`Fbasic_situation` varchar(500) DEFAULT NULL COMMENT '基本情况'", "t_primary_issuer_info");
 
-        map.put("`Frating_agency` varchar(100) DEFAULT NULL COMMENT '评级机构'", "t_primary_rating_info");
+        map.put("`Frating_agency` varchar(200) DEFAULT NULL COMMENT '评级机构'", "t_primary_rating_info");
 
         map.put("`Fsmall_range_lower_Side` varchar(20) DEFAULT NULL COMMENT '指导区间下限'", "t_primary_region_guide_info");//
         map.put("`Fsmall_range_upper_Side` varchar(20) DEFAULT NULL COMMENT '指导区间上限'", "t_primary_region_guide_info");//
+
+        map.put("`Fcontact_org_name` varchar(200) DEFAULT NULL COMMENT '联系人机构名称'", "t_primary_bond_contact_person");
         return map;
     }
 

@@ -7,10 +7,14 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.skeet.h2.SkeetH2Application;
 import com.skeet.h2.entity.UmsUser;
+import com.skeet.h2.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -29,6 +33,7 @@ import javax.annotation.Resource;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SkeetH2Application.class)
 @TestExecutionListeners({
+        MockitoTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
@@ -37,6 +42,9 @@ import javax.annotation.Resource;
 @ContextConfiguration(locations = "classpath:dataSource.xml")
 public class MapperTest {
 
+    @MockBean
+    private UserService userService;
+
     @Resource
     private UmsUserMapper umsUserMapper;
 
@@ -44,6 +52,7 @@ public class MapperTest {
     @DatabaseSetup(value = "/com/skeet/h2/mapper/User_Gen.xml", type = DatabaseOperation.INSERT)
     @ExpectedDatabase(value = "/com/skeet/h2/mapper/User_Cmp.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void testUpdateUser() {
+        Mockito.when(userService.getUserName()).thenReturn("my_sky");
         UmsUser user = UmsUser.builder().tid(20).username("talon1").password("dead").build();
         int result = umsUserMapper.updateByPrimaryKeySelective(user);
         Assert.assertTrue(result > 0);
