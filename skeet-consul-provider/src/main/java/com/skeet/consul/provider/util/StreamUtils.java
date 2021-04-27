@@ -22,6 +22,11 @@ import java.util.stream.Collectors;
  */
 public class StreamUtils {
 
+    public static void main(String[] args) {
+        System.out.println(StreamUtils.anyMatch(Lists.newArrayList(10, 3),
+                Arrays.asList(1, 2)::contains));
+    }
+
     /**
      * 将List转成指定Key,Value的Map
      *
@@ -321,5 +326,37 @@ public class StreamUtils {
         return list.stream()
                 .filter(predicate)
                 .collect(Collectors.groupingBy(mapper));
+    }
+
+    /**
+     * 任一元素匹配
+     *
+     * @param list      集合
+     * @param predicate 匹配条件
+     * @return 匹配结果
+     */
+    public static <T> boolean anyMatch(List<T> list, Predicate<T> predicate) {
+        if (CollectionUtils.isEmpty(list)) {
+            return false;
+        }
+
+        return list.stream()
+                .anyMatch(predicate);
+    }
+
+    /**
+     * 全部元素匹配
+     *
+     * @param list      待过滤集合
+     * @param predicate 匹配条件
+     * @return 匹配结果
+     */
+    public static <T> boolean allMatch(List<T> list, Predicate<T> predicate) {
+        if (CollectionUtils.isEmpty(list)) {
+            return false;
+        }
+
+        return list.stream()
+                .allMatch(predicate);
     }
 }
