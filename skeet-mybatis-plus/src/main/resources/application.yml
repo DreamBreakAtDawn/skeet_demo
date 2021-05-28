@@ -1,0 +1,30 @@
+server:
+  servlet:
+    context-path: /skeet-mybatis-plus
+
+spring:
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://212.129.164.73:3306/qtrade_ai?serverTimezone=Asia/Shanghai&useSSL=false&autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: NaqcChx3EpCX
+      max-active: 100
+      min-idle: 5
+      max-wait: 60000
+      initialSize: 5
+      timeBetweenEvictionRunsMillis: 60000
+      testOnBorrow: false
+      testOnReturn: false
+      validationQuery: SELECT 1 FROM DUAL
+
+
+mybatis-plus:
+  #mybatis-plus mapper xml 文件地址
+  mapper-locations: classpath:META-INF/mybatis/mapper/*Mapper.xml
+  #mybatis-plus type-aliases 文件地址
+  type-aliases-package: com.skeet.mybatisplus

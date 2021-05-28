@@ -40,7 +40,7 @@ public class MysqlGenerator extends AutoGenerator {
 
     private void init() {
         AutoGenerator mpg = this;
-        String projectPath = "C:\\MySoftware\\JetBrains\\IdeaProjects\\qtrade_primary_bond_sale";
+        String projectPath = "C:\\MySoftware\\JetBrains\\IdeaProjects\\skeet_demo\\skeet-mybatis-plus";
         // 全局配置
         initGlobalConfig(mpg, projectPath);
 
@@ -66,7 +66,9 @@ public class MysqlGenerator extends AutoGenerator {
         strategy.setEntityLombokModel(true);
         // TODO：设置表名
         strategy.setInclude(
-                "t_primary_issue_result"
+                "t_primary_subscribe_bond",
+                "t_primary_subscribe_tender",
+                "t_primary_user_bond_relation"
         );
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
@@ -104,7 +106,7 @@ public class MysqlGenerator extends AutoGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return projectPath + "/bond-sale-bids/src/main/resources/mappers/" + pc.getModuleName()
+                return projectPath + "/src/main/resources/mappers/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
@@ -124,15 +126,15 @@ public class MysqlGenerator extends AutoGenerator {
         PackageConfig pc = new PackageConfig();
         // TODO: 模块名
         pc.setModuleName("bond");
-        pc.setParent("com.qtrade.primary.bondsale.bids.refactor.modules");
+        pc.setParent("com.skeet.mybatisplus.modules");
         mpg.setPackageInfo(pc);
         return pc;
     }
 
     private void initDataSourceConfig(AutoGenerator mpg) {
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://212.129.164.73:3306/db_primary_bond_sale?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true");
-        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+        dsc.setUrl("jdbc:mysql://212.129.164.73:3306/db_primary_market?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true");
+        dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("NaqcChx3EpCX");
         mpg.setDataSource(dsc);
@@ -144,11 +146,11 @@ public class MysqlGenerator extends AutoGenerator {
         gc.setBaseResultMap(true);
         gc.setBaseColumnList(true);
         // 代码文件输出路径
-        gc.setOutputDir(projectPath + "/bond-sale-bids/src/main/java");
+        gc.setOutputDir(projectPath + "/src/main/java");
         // TODO: 作者
         gc.setAuthor("chengsj");
         // 开启Swagger
-        gc.setSwagger2(true);
+        gc.setSwagger2(false);
         gc.setFileOverride(true);
         gc.setOpen(false);
         gc.setMapperName("%sEntityMapper");

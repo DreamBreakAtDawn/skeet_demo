@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skeet.mybatisplus.modules.bond.mapper.PrimarySubscribeBondEntityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skeet.mybatisplus.modules.bond.entity.PrimarySubscribeBondEntity">
+        <id column="Fid" property="id" />
+        <result column="Forg_id" property="orgId" />
+        <result column="Fbond_id" property="bondId" />
+        <result column="Fbond_source" property="bondSource" />
+        <result column="Fbond_code" property="bondCode" />
+        <result column="Fbond_simple_name" property="bondSimpleName" />
+        <result column="Fbond_full_name" property="bondFullName" />
+        <result column="Fbond_type" property="bondType" />
+        <result column="Fissue_amount" property="issueAmount" />
+        <result column="Fexchange_market" property="exchangeMarket" />
+        <result column="Ftender_type" property="tenderType" />
+        <result column="Ftender_target" property="tenderTarget" />
+        <result column="Fannouncement_flag" property="announcementFlag" />
+        <result column="Fintercept_flag" property="interceptFlag" />
+        <result column="Freal_intercept_time" property="realInterceptTime" />
+        <result column="Fsuccessful_bid_flag" property="successfulBidFlag" />
+        <result column="Fdata_status" property="dataStatus" />
+        <result column="Fcreated_time" property="createdTime" />
+        <result column="Fupdated_time" property="updatedTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        Fid, Forg_id, Fbond_id, Fbond_source, Fbond_code, Fbond_simple_name, Fbond_full_name, Fbond_type, Fissue_amount, Fexchange_market, Ftender_type, Ftender_target, Fannouncement_flag, Fintercept_flag, Freal_intercept_time, Fsuccessful_bid_flag, Fdata_status, Fcreated_time, Fupdated_time
+    </sql>
+
+</mapper>

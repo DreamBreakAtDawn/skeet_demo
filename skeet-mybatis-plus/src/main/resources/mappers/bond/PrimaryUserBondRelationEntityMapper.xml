@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skeet.mybatisplus.modules.bond.mapper.PrimaryUserBondRelationEntityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skeet.mybatisplus.modules.bond.entity.PrimaryUserBondRelationEntity">
+        <id column="Fid" property="id" />
+        <result column="Fsubscribe_bond_id" property="subscribeBondId" />
+        <result column="Forg_id" property="orgId" />
+        <result column="Fopen_id" property="openId" />
+        <result column="Frelation_type" property="relationType" />
+        <result column="Fdata_status" property="dataStatus" />
+        <result column="Fcreated_time" property="createdTime" />
+        <result column="Fupdated_time" property="updatedTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        Fid, Fsubscribe_bond_id, Forg_id, Fopen_id, Frelation_type, Fdata_status, Fcreated_time, Fupdated_time
+    </sql>
+
+</mapper>

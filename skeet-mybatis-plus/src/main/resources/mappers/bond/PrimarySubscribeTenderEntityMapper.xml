@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skeet.mybatisplus.modules.bond.mapper.PrimarySubscribeTenderEntityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skeet.mybatisplus.modules.bond.entity.PrimarySubscribeTenderEntity">
+        <id column="Fid" property="id" />
+        <result column="Fstatus" property="status" />
+        <result column="Fsubscribe_bond_id" property="subscribeBondId" />
+        <result column="Frate" property="rate" />
+        <result column="Frate_margin" property="rateMargin" />
+        <result column="Fprice" property="price" />
+        <result column="Fvol" property="vol" />
+        <result column="Fopen_id" property="openId" />
+        <result column="Fuser_name" property="userName" />
+        <result column="Fuser_type" property="userType" />
+        <result column="Forg_id" property="orgId" />
+        <result column="Forg_name" property="orgName" />
+        <result column="Fopp_open_id" property="oppOpenId" />
+        <result column="Fopp_user_name" property="oppUserName" />
+        <result column="Fopp_user_type" property="oppUserType" />
+        <result column="Fopp_org_id" property="oppOrgId" />
+        <result column="Fopp_org_name" property="oppOrgName" />
+        <result column="Fdata_status" property="dataStatus" />
+        <result column="Fdata_source" property="dataSource" />
+        <result column="Fcreated_time" property="createdTime" />
+        <result column="Fupdated_time" property="updatedTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        Fid, Fstatus, Fsubscribe_bond_id, Frate, Frate_margin, Fprice, Fvol, Fopen_id, Fuser_name, Fuser_type, Forg_id, Forg_name, Fopp_open_id, Fopp_user_name, Fopp_user_type, Fopp_org_id, Fopp_org_name, Fdata_status, Fdata_source, Fcreated_time, Fupdated_time
+    </sql>
+
+</mapper>
