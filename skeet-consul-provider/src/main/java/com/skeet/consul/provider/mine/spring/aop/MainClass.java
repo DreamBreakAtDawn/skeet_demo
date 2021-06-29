@@ -12,11 +12,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class MainClass {
 
     public static void main(String[] args) {
+        doLogic();
+    }
+
+    private static String doLogic() {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MainConfig.class);
         InstanceA instance = (InstanceA) ctx.getBean("instanceA");
-        instance.said();
-
-//        InstanceInterface instanceB = (InstanceInterface) ctx.getBean("instanceB");
-//        instanceB.run();
+        return instance.said();
     }
 }

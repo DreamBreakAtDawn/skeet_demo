@@ -20,7 +20,7 @@ public class InstanceA extends InstanceFather {
     public String said() {
         System.out.println("instanceA said......");
 
-//        int a = 1 / 0;
+        int a = 1 / 0;
         return content();
     }
 

@@ -1,6 +1,5 @@
-package com.skeet.consul.provider.util;
+package com.skeet.common.api.util;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -22,6 +21,11 @@ import java.util.stream.Collectors;
  */
 public class StreamUtils {
 
+    public static void main(String[] args) {
+        System.out.println(StreamUtils.anyMatch(Lists.newArrayList(10, 3),
+                Arrays.asList(1, 2)::contains));
+    }
+
     /**
      * 将List转成指定Key,Value的Map
      *
@@ -33,7 +37,7 @@ public class StreamUtils {
     public static <T, K, V> Map<K, V> toMap(List<T> list,
                                             Function<? super T, ? extends K> keyField,
                                             Function<? super T, ? extends V> value) {
-        if (CollectionUtil.isEmpty(list)) {
+        if (CollectionUtils.isEmpty(list)) {
             return Maps.newHashMapWithExpectedSize(0);
         }
 
@@ -50,7 +54,7 @@ public class StreamUtils {
      * @return Map
      */
     public static <T, K> Map<K, T> toMap(List<T> list, Function<? super T, ? extends K> keyField) {
-        if (CollectionUtil.isEmpty(list)) {
+        if (CollectionUtils.isEmpty(list)) {
             return Maps.newHashMapWithExpectedSize(0);
         }
 
@@ -353,61 +357,5 @@ public class StreamUtils {
 
         return list.stream()
                 .allMatch(predicate);
-    }
-
-
-    public static void main(String[] args) {
-        String number = "2852956131\n" +
-                "3008829514\n" +
-                "3007991200\n" +
-                "3007348957\n" +
-                "2852896019\n" +
-                "3007223435\n" +
-                "3007290293\n" +
-                "3007283767\n" +
-                "2852792953\n" +
-                "3008709616\n" +
-                "3003179321\n" +
-                "3007987867\n" +
-                "2853109679\n" +
-                "3007775778\n" +
-                "3007629480\n" +
-                "2852826889\n" +
-                "3007378668\n" +
-                "3003185056\n" +
-                "3004492841\n" +
-                "3007369423\n" +
-                "3007427290\n" +
-                "2850476508\n" +
-                "3007296354\n" +
-                "3003416732\n" +
-                "2852956124\n" +
-                "2852826889\n" +
-                "3007408036\n" +
-                "3007311762\n" +
-                "3007229158\n" +
-                "2853600639\n" +
-                "3007931256\n" +
-                "3007258366\n" +
-                "2852956125\n" +
-                "3007367824\n" +
-                "2852786312\n" +
-                "2852238899\n" +
-                "3007228263\n" +
-                "3007409012\n" +
-                "3007229106\n" +
-                "2850271400\n" +
-                "3007347608\n" +
-                "2850712507\n" +
-                "3003412195\n" +
-                "2851703634\n" +
-                "2852754840\n" +
-                "2852797923\n" +
-                "2852831105\n" +
-                "2852754840";
-
-        String[] strings = StringUtils.split(number, "\n");
-        List<String> results = StreamUtils.distinct(Arrays.asList(strings), Function.identity());
-        results.forEach(System.out::println);
     }
 }
